@@ -27,6 +27,10 @@ public class JsonPathAssertion {
 		return new JsonPathAssertion(parsedJson).root();
 	}
 
+	public static JsonPathVerifiable assertThat(DocumentContext parsedJson) {
+		return new JsonPathAssertion(parsedJson).root();
+	}
+
 	private JsonPathVerifiable root() {
 		NamelessArrayHavingFieldAssertion asserter = new NamelessArrayHavingFieldAssertion(parsedJson, jsonPathBuffer, "");
 		asserter.jsonPathBuffer.offer("$");

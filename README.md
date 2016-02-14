@@ -6,6 +6,8 @@ JSON Path assert
 
 TODO
 
+- change the name to jsonassert
+
 Changelog
 --------------------
 [Changes are available here](CHANGELOG.md)
