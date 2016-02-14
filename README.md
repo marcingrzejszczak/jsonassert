@@ -4,6 +4,8 @@
 JSON assert
 ===============
 
+[![Join the chat at https://gitter.im/marcingrzejszczak/jsonassert](https://badges.gitter.im/marcingrzejszczak/jsonassert.svg)](https://gitter.im/marcingrzejszczak/jsonassert?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 Changelog
 --------------------
