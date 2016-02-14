@@ -5,12 +5,14 @@ import java.util.LinkedList;
 import com.jayway.jsonpath.DocumentContext;
 
 class ArrayAssertion extends JsonAsserter {
-	protected ArrayAssertion(DocumentContext parsedJson, LinkedList<String> jsonPathBuffer, Object arrayName) {
-		super(parsedJson, jsonPathBuffer, arrayName);
+	protected ArrayAssertion(DocumentContext parsedJson, LinkedList<String> jsonPathBuffer,
+			Object arrayName, JsonAsserterConfiguration jsonAsserterConfiguration) {
+		super(parsedJson, jsonPathBuffer, arrayName, jsonAsserterConfiguration);
 	}
 
-	protected ArrayAssertion(DocumentContext parsedJson, LinkedList<String> jsonPathBuffer) {
-		super(parsedJson, jsonPathBuffer, null);
+	protected ArrayAssertion(DocumentContext parsedJson, LinkedList<String> jsonPathBuffer,
+			JsonAsserterConfiguration jsonAsserterConfiguration) {
+		super(parsedJson, jsonPathBuffer, null, jsonAsserterConfiguration);
 	}
 
 	@Override

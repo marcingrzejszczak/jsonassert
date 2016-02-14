@@ -4,21 +4,12 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import java.util.regex.Pattern
-
 import static JsonAssertion.assertThat
 import static groovy.json.JsonOutput.toJson
-
 /**
  * @author Marcin Grzejszczak
  */
-public class JsonPathAssertionSpec extends Specification {
-
-	def 'should work'() {
-		expect:
-		assertThat('body').field('foo').isEqualTo('bar')
-		assertThat('body').field('foo').array('nested').contains('withlist').isEqualTo('bar')
-	}
+public class JsonAssertionSpec extends Specification {
 
 	@Shared String json1 = '''
 						 {
@@ -38,7 +29,6 @@ public class JsonPathAssertionSpec extends Specification {
 	def 'should convert a json with a map as root to a map of path to value '() {
 		expect:
 			verifiable.jsonPath() == expectedJsonPath
-			verifiable.check()
 		where:
 			verifiable                                                                                           || expectedJsonPath
 			assertThat(json1).field("some").field("nested").field("anothervalue").isEqualTo(4)                    || '''$.some.nested[?(@.anothervalue == 4)]'''
@@ -56,7 +46,6 @@ public class JsonPathAssertionSpec extends Specification {
 	def "should generate assertions for simple response body"() {
 		expect:
 			verifiable.jsonPath() == expectedJsonPath
-			verifiable.check()
 		where:
 			verifiable                                         || expectedJsonPath
 			assertThat(json2).field("property1").isEqualTo("a") || '''$[?(@.property1 == 'a')]'''
@@ -73,7 +62,6 @@ public class JsonPathAssertionSpec extends Specification {
 	def "should generate assertions for null and boolean values"() {
 		expect:
 			verifiable.jsonPath() == expectedJsonPath
-			verifiable.check()
 		where:
 			verifiable                                            || expectedJsonPath
 			assertThat(json3).field("property1").isEqualTo("true") || '''$[?(@.property1 == 'true')]'''
@@ -93,7 +81,6 @@ public class JsonPathAssertionSpec extends Specification {
 	def "should generate assertions for simple response body constructed from map with a list"() {
 		expect:
 			verifiable.jsonPath() == expectedJsonPath
-			verifiable.check()
 		where:
 			verifiable                                                                     || expectedJsonPath
 			assertThat(toJson(json4)).field("property1").isEqualTo("a")                     || '''$[?(@.property1 == 'a')]'''
@@ -112,7 +99,6 @@ public class JsonPathAssertionSpec extends Specification {
 	def "should generate assertions for a response body containing map with integers as keys"() {
 		expect:
 			verifiable.jsonPath() == expectedJsonPath
-			verifiable.check()
 		where:
 			verifiable                                                          || expectedJsonPath
 			assertThat(toJson(json5)).field("property").field(7).isEqualTo(0.0)  || '''$.property[?(@.7 == 0.0)]'''
@@ -131,7 +117,6 @@ public class JsonPathAssertionSpec extends Specification {
 	def "should generate assertions for array in response body"() {
 		expect:
 			verifiable.jsonPath() == expectedJsonPath
-			verifiable.check()
 		where:
 			verifiable                                                    || expectedJsonPath
 			assertThat(json6).array().contains("property1").isEqualTo("a") || '''$[*][?(@.property1 == 'a')]'''
@@ -149,7 +134,6 @@ public class JsonPathAssertionSpec extends Specification {
 	def "should generate assertions for array inside response body element"() {
 		expect:
 			verifiable.jsonPath() == expectedJsonPath
-			verifiable.check()
 		where:
 			verifiable                                                                   || expectedJsonPath
 			assertThat(json7).array("property1").contains("property2").isEqualTo("test1") || '''$.property1[*][?(@.property2 == 'test1')]'''
@@ -164,7 +148,6 @@ public class JsonPathAssertionSpec extends Specification {
 	def "should generate assertions for nested objects in response body"() {
 		expect:
 			verifiable.jsonPath() == expectedJsonPath
-			verifiable.check()
 		where:
 			verifiable                                                            || expectedJsonPath
 			assertThat(json8).field("property2").field("property3").isEqualTo("b") || '''$.property2[?(@.property3 == 'b')]'''
@@ -173,7 +156,7 @@ public class JsonPathAssertionSpec extends Specification {
 
 	@Shared Map json9 =  [
 			property1: "a",
-			property2: Pattern.compile('[0-9]{3}')
+			property2: 123
 	]
 
 	@Unroll
@@ -189,7 +172,7 @@ public class JsonPathAssertionSpec extends Specification {
 	def "should generate escaped regex assertions for string objects in response body"() {
 		given:
 		Map json =  [
-				property2: Pattern.compile('\\d+')
+				property2: 123123
 		]
 		expect:
 			def verifiable = assertThat(toJson(json)).field("property2").matches("\\d+")
@@ -207,7 +190,6 @@ public class JsonPathAssertionSpec extends Specification {
 	def "should work with more complex stuff and jsonpaths"() {
 		expect:
 			verifiable.jsonPath() == expectedJsonPath
-			verifiable.check()
 		where:
 			verifiable                                                                                     || expectedJsonPath
 			assertThat(toJson(json10)).array("errors").contains("property").isEqualTo("bank_account_number") || '''$.errors[*][?(@.property == 'bank_account_number')]'''
@@ -234,7 +216,6 @@ public class JsonPathAssertionSpec extends Specification {
 	def "should manage to parse a double array"() {
 		expect:
 			verifiable.jsonPath() == expectedJsonPath
-			verifiable.check()
 		where:
 			verifiable                                                                                                                           || expectedJsonPath
 			assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(38.995548).value()  || '''$[*].place.bounding_box.coordinates[*][*][?(@ == 38.995548)]'''
@@ -303,6 +284,47 @@ public class JsonPathAssertionSpec extends Specification {
 								}
 							}
 						]''']
+	}
+
+	def "should run json path when provided manually"() {
+		given:
+			String json = """{
+			"property1": "a",
+			"property2": {"property3": "b"}
+		}"""
+		and:
+			String jsonPath = '''$[?(@.property1 == 'a')]'''
+		expect:
+			assertThat(json).matchesJsonPath(jsonPath)
+	}
+
+	def "should throw exception when json path is not matched"() {
+		given:
+			String json = """{
+			"property1": "a",
+			"property2": {"property3": "b"}
+		}"""
+		and:
+			String jsonPath = '''$[?(@.property1 == 'c')]'''
+		when:
+			assertThat(json).matchesJsonPath(jsonPath)
+		then:
+			IllegalStateException illegalStateException = thrown(IllegalStateException)
+			illegalStateException.message.contains("Parsed JSON doesn't match")
+	}
+
+	def "should not throw exception when json path is not matched and system prop overrides the check"() {
+		given:
+			String json = """{
+			"property1": "a",
+			"property2": {"property3": "b"}
+		}"""
+		and:
+			String jsonPath = '''$[?(@.property1 == 'c')]'''
+		when:
+			assertThat(json).withoutThrowingException().matchesJsonPath(jsonPath)
+		then:
+			noExceptionThrown()
 	}
 
 }

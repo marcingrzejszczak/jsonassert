@@ -3,25 +3,33 @@ package com.blogspot.toomuchcoding.jsonassert;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jayway.jsonpath.DocumentContext;
 
 import net.minidev.json.JSONArray;
 
 class JsonAsserter implements JsonVerifiable {
 
+	private static final Logger log = LoggerFactory.getLogger(JsonAsserter.class);
+
 	protected final DocumentContext parsedJson;
 	protected final LinkedList<String> jsonPathBuffer;
 	protected final Object fieldName;
+	protected final JsonAsserterConfiguration jsonAsserterConfiguration;
 
-	protected JsonAsserter(DocumentContext parsedJson, LinkedList<String> jsonPathBuffer, Object fieldName) {
+	protected JsonAsserter(DocumentContext parsedJson, LinkedList<String> jsonPathBuffer,
+			Object fieldName, JsonAsserterConfiguration jsonAsserterConfiguration) {
 		this.parsedJson = parsedJson;
 		this.jsonPathBuffer = new LinkedList<String>(jsonPathBuffer);
 		this.fieldName = fieldName;
+		this.jsonAsserterConfiguration = jsonAsserterConfiguration;
 	}
 
 	@Override
 	public JsonVerifiable contains(final Object value) {
-		FieldAssertion asserter = new FieldAssertion(parsedJson, jsonPathBuffer, value);
+		FieldAssertion asserter = new FieldAssertion(parsedJson, jsonPathBuffer, value, jsonAsserterConfiguration);
 		// this is fake part of jsonpath since in the next section we will remove this entry
 		asserter.jsonPathBuffer.offer("[*]");
 		return asserter;
@@ -29,7 +37,7 @@ class JsonAsserter implements JsonVerifiable {
 
 	@Override
 	public FieldAssertion field(final Object value) {
-		FieldAssertion asserter = new FieldAssertion(parsedJson, jsonPathBuffer, value);
+		FieldAssertion asserter = new FieldAssertion(parsedJson, jsonPathBuffer, value, jsonAsserterConfiguration);
 		asserter.jsonPathBuffer.offer("." + String.valueOf(value));
 		return asserter;
 	}
@@ -39,19 +47,19 @@ class JsonAsserter implements JsonVerifiable {
 		if (value == null) {
 			return array();
 		}
-		ArrayAssertion asserter = new ArrayAssertion(parsedJson, jsonPathBuffer, value);
+		ArrayAssertion asserter = new ArrayAssertion(parsedJson, jsonPathBuffer, value, jsonAsserterConfiguration);
 		asserter.jsonPathBuffer.offer("." + String.valueOf(value) + "[*]");
 		return asserter;
 	}
 
 	@Override
 	public ArrayValueAssertion arrayField() {
-		return new ArrayValueAssertion(parsedJson, jsonPathBuffer);
+		return new ArrayValueAssertion(parsedJson, jsonPathBuffer, jsonAsserterConfiguration);
 	}
 
 	@Override
 	public ArrayAssertion array() {
-		ArrayAssertion asserter = new ArrayAssertion(parsedJson, jsonPathBuffer);
+		ArrayAssertion asserter = new ArrayAssertion(parsedJson, jsonPathBuffer, jsonAsserterConfiguration);
 		asserter.jsonPathBuffer.offer("[*]");
 		return asserter;
 	}
@@ -62,9 +70,10 @@ class JsonAsserter implements JsonVerifiable {
 			return isNull();
 		}
 		ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
-				jsonPathBuffer, fieldName);
+				jsonPathBuffer, fieldName, jsonAsserterConfiguration);
 		readyToCheck.jsonPathBuffer.removeLast();
 		readyToCheck.jsonPathBuffer.offer("[?(@." + String.valueOf(fieldName)+ " == " + wrapValueWithSingleQuotes(value) + ")]");
+		readyToCheck.checkBufferedJsonPathString();
 		return readyToCheck;
 	}
 
@@ -89,18 +98,20 @@ class JsonAsserter implements JsonVerifiable {
 			return isNull();
 		}
 		ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
-				jsonPathBuffer, fieldName);
+				jsonPathBuffer, fieldName, jsonAsserterConfiguration);
 		readyToCheck.jsonPathBuffer.removeLast();
 		readyToCheck.jsonPathBuffer.offer("[?(@." + String.valueOf(fieldName)+ " == " + value + ")]");
+		readyToCheck.checkBufferedJsonPathString();
 		return readyToCheck;
 	}
 
 	@Override
 	public JsonVerifiable isNull() {
 		ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
-				jsonPathBuffer, fieldName);
+				jsonPathBuffer, fieldName, jsonAsserterConfiguration);
 		readyToCheck.jsonPathBuffer.removeLast();
 		readyToCheck.jsonPathBuffer.offer("[?(@." + String.valueOf(fieldName) + " == null)]");
+		readyToCheck.checkBufferedJsonPathString();
 		return readyToCheck;
 	}
 
@@ -110,10 +121,11 @@ class JsonAsserter implements JsonVerifiable {
 			return isNull();
 		}
 		ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
-				jsonPathBuffer, fieldName);
+				jsonPathBuffer, fieldName, jsonAsserterConfiguration);
 		readyToCheck.jsonPathBuffer.removeLast();
 		readyToCheck.jsonPathBuffer.offer("[?(@." + String.valueOf(fieldName)
 				+ " =~ /" + stringWithEscapedSingleQuotes(value) + "/)]");
+		readyToCheck.checkBufferedJsonPathString();
 		return readyToCheck;
 	}
 
@@ -123,21 +135,37 @@ class JsonAsserter implements JsonVerifiable {
 			return isNull();
 		}
 		ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
-				jsonPathBuffer, fieldName);
+				jsonPathBuffer, fieldName, jsonAsserterConfiguration);
 		readyToCheck.jsonPathBuffer.removeLast();
 		readyToCheck.jsonPathBuffer.offer("[?(@." + String.valueOf(fieldName)+ " == " + String.valueOf(value) + ")]");
+		readyToCheck.checkBufferedJsonPathString();
 		return readyToCheck;
 	}
 
 	@Override
 	public JsonVerifiable value() {
 		return new ReadyToCheckAsserter(parsedJson,
-				jsonPathBuffer, fieldName);
+				jsonPathBuffer, fieldName, jsonAsserterConfiguration);
 	}
 
 	@Override
-	public void check() {
-		assert !parsedJson.read(createJsonPathString(), JSONArray.class).isEmpty();
+	public JsonVerifiable withoutThrowingException() {
+		jsonAsserterConfiguration.ignoreJsonPathException = true;
+		return this;
+	}
+
+	private void check(String jsonPathString) {
+		if (jsonAsserterConfiguration.ignoreJsonPathException) {
+			log.warn("WARNING!!! Overriding verification of the JSON Path. Your tests may pass even though they shouldn't");
+			return;
+		}
+		if (parsedJson.read(jsonPathString, JSONArray.class).isEmpty()) {
+			throw new IllegalStateException("Parsed JSON doesn't match the JSON path [" + jsonPathString + "]");
+		}
+	}
+
+	protected void checkBufferedJsonPathString() {
+		check(createJsonPathString());
 	}
 
 	private String createJsonPathString() {
@@ -152,6 +180,11 @@ class JsonAsserter implements JsonVerifiable {
 	@Override
 	public String jsonPath() {
 		return createJsonPathString();
+	}
+
+	@Override
+	public void matchesJsonPath(String jsonPath) {
+		check(jsonPath);
 	}
 
 	public boolean equals(Object o) {
@@ -178,11 +211,6 @@ class JsonAsserter implements JsonVerifiable {
 	public String toString() {
 		return "\\nAsserter{\n    " + "jsonPathBuffer=" + String.valueOf(jsonPathBuffer)
 				+ "\n}";
-	}
-
-	@Override
-	public boolean isReadyToCheck() {
-		return false;
 	}
 
 	@Override

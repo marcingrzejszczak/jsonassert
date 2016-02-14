@@ -5,7 +5,7 @@ package com.blogspot.toomuchcoding.jsonassert;
  *
  * @author Marcin Grzejszczak
  */
-public interface JsonVerifiable extends ReadyToCheck, IteratingOverArray {
+public interface JsonVerifiable extends IteratingOverArray {
 
 	/**
 	 * Assertion of a field inside an array. Use it only for assertion and not traversing
@@ -32,44 +32,65 @@ public interface JsonVerifiable extends ReadyToCheck, IteratingOverArray {
 	 */
 	JsonVerifiable array();
 
-	//TODO: All below should return ReadyToCheck
 	/**
-	 * Equality comparison with String
+	 * 0Equality comparison with String
+	 *
+	 * @throws IllegalStateException - if JSON Path is not matched for the parsed JSON
 	 */
-	JsonVerifiable isEqualTo(String value);
+	JsonVerifiable isEqualTo(String value) throws IllegalStateException;
 
 	/**
 	 * Equality comparison with any object
+	 *
+	 * @throws IllegalStateException - if JSON Path is not matched for the parsed JSON
 	 */
-	JsonVerifiable isEqualTo(Object value);
+	JsonVerifiable isEqualTo(Object value) throws IllegalStateException;
 
 	/**
 	 * Equality comparison with a Number
+	 *
+	 * @throws IllegalStateException - if JSON Path is not matched for the parsed JSON
 	 */
-	JsonVerifiable isEqualTo(Number value);
+	JsonVerifiable isEqualTo(Number value) throws IllegalStateException;
 
 	/**
 	 * Equality comparison to null
+	 *
+	 * @throws IllegalStateException - if JSON Path is not matched for the parsed JSON
 	 */
-	JsonVerifiable isNull();
+	JsonVerifiable isNull() throws IllegalStateException;
 
 	/**
 	 * Regex matching
+	 *
+	 * @throws IllegalStateException - if JSON Path is not matched for the parsed JSON
 	 */
-	JsonVerifiable matches(String value);
+	JsonVerifiable matches(String value) throws IllegalStateException;
 
 	/**
 	 * Equality comparison with a Boolean
+	 *
+	 * @throws IllegalStateException - if JSON Path is not matched for the parsed JSON
 	 */
-	JsonVerifiable isEqualTo(Boolean value);
+	JsonVerifiable isEqualTo(Boolean value) throws IllegalStateException;
 
 	/**
-	 * Call this to to perform assertion against an array of primitives
+	 * Syntactic sugar for checking against an array of primitives
 	 */
 	JsonVerifiable value();
+
+	/**
+	 * Calling this method will setup the fluent interface to ignore any JSON Path verification
+	 */
+	JsonVerifiable withoutThrowingException();
 
 	/**
 	 * Returns current JSON Path expression
 	 */
 	String jsonPath();
+
+	/**
+	 * Checks if the parsed document matches given JSON Path
+	 */
+	void matchesJsonPath(String jsonPath);
 }

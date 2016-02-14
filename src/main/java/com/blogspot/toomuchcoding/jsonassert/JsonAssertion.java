@@ -1,11 +1,11 @@
 package com.blogspot.toomuchcoding.jsonassert;
 
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-
-import net.minidev.json.JSONArray;
 
 /**
  * Entry point for assertions. Use the static factory method and you're ready to go!
@@ -17,14 +17,24 @@ import net.minidev.json.JSONArray;
 public class JsonAssertion {
 	private final DocumentContext parsedJson;
 	private final LinkedList<String> jsonPathBuffer = new LinkedList<String>();
+	private final JsonAsserterConfiguration jsonAsserterConfiguration = new JsonAsserterConfiguration();
+	private static final Map<String, DocumentContext> CACHE = new ConcurrentHashMap<String, DocumentContext>();
 
 	private JsonAssertion(DocumentContext parsedJson) {
 		this.parsedJson = parsedJson;
 	}
 
+	private JsonAssertion(String body) {
+		DocumentContext documentContext = CACHE.get(body);
+		if (documentContext == null) {
+			documentContext = JsonPath.parse(body);
+			CACHE.put(body, documentContext);
+		}
+		this.parsedJson = documentContext;
+	}
+
 	public static JsonVerifiable assertThat(String body) {
-		DocumentContext parsedJson = JsonPath.parse(body);
-		return new JsonAssertion(parsedJson).root();
+		return new JsonAssertion(body).root();
 	}
 
 	public static JsonVerifiable assertThat(DocumentContext parsedJson) {
@@ -32,13 +42,9 @@ public class JsonAssertion {
 	}
 
 	private JsonVerifiable root() {
-		NamelessArrayHavingFieldAssertion asserter = new NamelessArrayHavingFieldAssertion(parsedJson, jsonPathBuffer, "");
+		NamelessArrayHavingFieldAssertion asserter = new NamelessArrayHavingFieldAssertion(parsedJson, jsonPathBuffer, "", jsonAsserterConfiguration);
 		asserter.jsonPathBuffer.offer("$");
 		return asserter;
-	}
-
-	public void matchesJsonPath(String jsonPath) {
-		assert !parsedJson.read(jsonPath, JSONArray.class).isEmpty();
 	}
 
 }

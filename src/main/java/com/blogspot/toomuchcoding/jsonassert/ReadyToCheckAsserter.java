@@ -6,13 +6,9 @@ import com.jayway.jsonpath.DocumentContext;
 
 class ReadyToCheckAsserter extends JsonAsserter {
 
-	public ReadyToCheckAsserter(DocumentContext parsedJson, LinkedList<String> jsonPathBuffer, Object fieldName) {
-		super(parsedJson, jsonPathBuffer, fieldName);
-	}
-
-	@Override
-	public boolean isReadyToCheck() {
-		return true;
+	public ReadyToCheckAsserter(DocumentContext parsedJson, LinkedList<String> jsonPathBuffer,
+			Object fieldName, JsonAsserterConfiguration jsonAsserterConfiguration) {
+		super(parsedJson, jsonPathBuffer, fieldName, jsonAsserterConfiguration);
 	}
 
 }
