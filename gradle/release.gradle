@@ -1,9 +1,5 @@
 apply plugin: 'maven'
-apply plugin: 'signing'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'io.codearte.nexus-staging'
-
-String projectDescription = '''Spock extension that allows you to inject Collaborators into Subjects. Bases on Mockito's @InjectMocks functionality'''
+apply plugin: 'com.bmuschko.nexus'
 
 task javadocJar(type: Jar) {
 	classifier = 'javadoc'
@@ -19,69 +15,36 @@ artifacts {
 	archives javadocJar, sourcesJar
 }
 
-signing {
-	sign configurations.archives
-}
+modifyPom {
+	project {
+		name "$project.name"
+		packaging 'jar'
+		description 'Small library for those who have a hard time understanding the complexity of JSON Path.\''
+		url 'https://github.com/marcingrzejszczak/jsonassert'
+		inceptionYear '2016'
 
-uploadArchives {
-	repositories {
-		mavenDeployer {
-			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+		scm {
+			connection 'git@github.com:marcingrzejszczak/jsonassert.git'
+			developerConnection 'git@github.com:marcingrzejszczak/jsonassert.git'
+			url 'https://github.com/marcingrzejszczak/jsonassert'
+		}
 
-			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-				authentication(userName: sonatypeUsername, password: sonatypePassword)
+		licenses {
+			license {
+				name 'The Apache License, Version 2.0'
+				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
 			}
+		}
 
-			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-				authentication(userName: sonatypeUsername, password: sonatypePassword)
-			}
-
-			pom.project {
-				name "$project.name"
-				packaging 'jar'
-				description projectDescription
-				url 'https://github.com/marcingrzejszczak/spock-subjects-collaborators-extension'
-
-				scm {
-					connection 'git@github.com:marcingrzejszczak/spock-subjects-collaborators-extension.git'
-					developerConnection 'git@github.com:marcingrzejszczak/spock-subjects-collaborators-extension.git'
-					url 'https://github.com/marcingrzejszczak/spock-subjects-collaborators-extension'
-				}
-
-				licenses {
-					license {
-						name 'The Apache License, Version 2.0'
-						url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-					}
-				}
-
-				developers {
-					developer {
-						id 'marcingrzejszczak'
-						name 'Marcin Grzejszczak'
-						email 'marcin ATT grzejszczak DOTT pl'
-					}
-				}
+		developers {
+			developer {
+				id 'marcingrzejszczak'
+				name 'Marcin Grzejszczak'
+				email 'marcin ATT grzejszczak DOTT pl'
 			}
 		}
 	}
 }
 
-uploadArchives.dependsOn(check)
-bintrayUpload.dependsOn(check)
-
-task release(dependsOn:['uploadArchives', 'bintrayUpload']) {}
-
-bintray {
-	user = project.properties['bintrayUser']
-	key = project.properties['bintrayKey']
-	publications = ['code']
-	pkg {
-		repo = 'com-blogspot-toomuchcoding'
-		name = 'spock-subjects-collaborators-extension'
-		desc = projectDescription
-		licenses = ['Apache-2.0']
-		labels = ['spock']
-	}
-}
+uploadArchives.dependsOn { check }
 

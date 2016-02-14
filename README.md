@@ -131,6 +131,14 @@ $[*].place.bounding_box.coordinates[*][*][?(@ == 38.791645)]
 
 More examples can be found in the `JsonAssertionSpec` in the test sources
 
+## How to add it
+
+Just add it as your dependency (Example for Gradle)
+
+```
+testCompile `com.blogspot.toomuchcoding:jsonassert:0.0.1`
+```
+
 Contact
 --------------------
 [Gitter chat](https://gitter.im/marcingrzejszczak/jsonassert)

@@ -7,16 +7,34 @@ buildscript {
         jcenter()
     }
     dependencies {
-        if (!version.contains('SNAPSHOT')) {
-            classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:+'
-            classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
-        }
+        classpath "pl.allegro.tech.build:axion-release-plugin:1.3.4"
+        classpath "com.bmuschko:gradle-nexus-plugin:2.3"
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
     }
 }
 
+apply plugin: "pl.allegro.tech.build.axion-release"
+
+scmVersion {
+    tag { prefix = "jsonassert" }
+    createReleaseCommit = true
+    releaseCommitMessage { version, position -> "Release version: ${version}\n\n[ci skip]" }
+    hooks {
+        pre "fileUpdate", [file       : "README.md",
+                           pattern    : { v, p -> /'com\.blogspot\.toomuchcoding:jsonassert:.*'/ },
+                           replacement: { v, p -> "'com.blogspot.toomuchcoding:jsonassert:$v'" }]
+    }
+}
+
+apply plugin: 'io.codearte.nexus-staging'
+
+nexusStaging {
+    packageGroup = "com.blogspot.toomuchcoding"
+    stagingProfileId = '11d4d01e820bb'
+}
 
 group = 'com.blogspot.toomuchcoding'
-version = '0.0.1-SNAPSHOT'
+project.version = scmVersion.version
 description = "JSON assertion library"
 
 sourceCompatibility = 1.7
