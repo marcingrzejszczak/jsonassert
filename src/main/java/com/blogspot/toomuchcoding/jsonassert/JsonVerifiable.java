@@ -1,4 +1,4 @@
-package com.blogspot.toomuchcoding.jsonpathassert;
+package com.blogspot.toomuchcoding.jsonassert;
 
 /**
  * Contract to match a parsed JSON via JSON Path
@@ -23,11 +23,6 @@ public interface JsonVerifiable extends ReadyToCheck, IteratingOverArray {
 	JsonVerifiable array(Object value);
 
 	/**
-	 * When you want to compare values of a particular field in a named array
-	 */
-	JsonVerifiable arrayField(Object value);
-
-	/**
 	 * When you want to compare values of a field in a nameless array
 	 */
 	JsonVerifiable arrayField();
@@ -36,13 +31,6 @@ public interface JsonVerifiable extends ReadyToCheck, IteratingOverArray {
 	 * When in JSON path you iterate over a nameless array
 	 */
 	JsonVerifiable array();
-
-	/**
-	 * When in JSON path you iterate over arrays and need to skip iteration
-	 *
-	 * TODO: Think of removing this
-	 */
-	JsonVerifiable iterationPassingArray();
 
 	//TODO: All below should return ReadyToCheck
 	/**

@@ -1,4 +1,4 @@
-package com.blogspot.toomuchcoding.jsonpathassert;
+package com.blogspot.toomuchcoding.jsonassert;
 
 import java.util.LinkedList;
 

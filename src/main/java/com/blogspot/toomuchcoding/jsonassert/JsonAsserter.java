@@ -1,6 +1,7 @@
-package com.blogspot.toomuchcoding.jsonpathassert;
+package com.blogspot.toomuchcoding.jsonassert;
 
 import java.util.LinkedList;
+import java.util.regex.Pattern;
 
 import com.jayway.jsonpath.DocumentContext;
 
@@ -44,13 +45,6 @@ class JsonAsserter implements JsonVerifiable {
 	}
 
 	@Override
-	public ArrayValueAssertion arrayField(final Object value) {
-		ArrayValueAssertion asserter = new ArrayValueAssertion(parsedJson, jsonPathBuffer, value);
-		asserter.jsonPathBuffer.offer("." + String.valueOf(value));
-		return asserter;
-	}
-
-	@Override
 	public ArrayValueAssertion arrayField() {
 		return new ArrayValueAssertion(parsedJson, jsonPathBuffer);
 	}
@@ -60,11 +54,6 @@ class JsonAsserter implements JsonVerifiable {
 		ArrayAssertion asserter = new ArrayAssertion(parsedJson, jsonPathBuffer);
 		asserter.jsonPathBuffer.offer("[*]");
 		return asserter;
-	}
-
-	@Override
-	public ArrayAssertion iterationPassingArray() {
-		return new ArrayAssertion(parsedJson, jsonPathBuffer);
 	}
 
 	@Override
@@ -88,6 +77,8 @@ class JsonAsserter implements JsonVerifiable {
 			return isEqualTo((Number) value);
 		} else if (value instanceof Boolean) {
 			return isEqualTo((Boolean) value);
+		} else if (value instanceof Pattern) {
+			return matches(((Pattern) value).pattern());
 		}
 		return isEqualTo(value.toString());
 	}
