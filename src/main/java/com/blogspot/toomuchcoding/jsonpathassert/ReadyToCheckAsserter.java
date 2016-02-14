@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import com.jayway.jsonpath.DocumentContext;
 
-class ReadyToCheckAsserter extends JsonPathAsserter {
+class ReadyToCheckAsserter extends JsonAsserter {
 
 	public ReadyToCheckAsserter(DocumentContext parsedJson, LinkedList<String> jsonPathBuffer, Object fieldName) {
 		super(parsedJson, jsonPathBuffer, fieldName);

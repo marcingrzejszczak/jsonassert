@@ -6,20 +6,20 @@ import com.jayway.jsonpath.DocumentContext;
 
 import net.minidev.json.JSONArray;
 
-class JsonPathAsserter implements JsonPathVerifiable {
+class JsonAsserter implements JsonVerifiable {
 
 	protected final DocumentContext parsedJson;
 	protected final LinkedList<String> jsonPathBuffer;
 	protected final Object fieldName;
 
-	protected JsonPathAsserter(DocumentContext parsedJson, LinkedList<String> jsonPathBuffer, Object fieldName) {
+	protected JsonAsserter(DocumentContext parsedJson, LinkedList<String> jsonPathBuffer, Object fieldName) {
 		this.parsedJson = parsedJson;
 		this.jsonPathBuffer = new LinkedList<String>(jsonPathBuffer);
 		this.fieldName = fieldName;
 	}
 
 	@Override
-	public JsonPathVerifiable contains(final Object value) {
+	public JsonVerifiable contains(final Object value) {
 		FieldAssertion asserter = new FieldAssertion(parsedJson, jsonPathBuffer, value);
 		// this is fake part of jsonpath since in the next section we will remove this entry
 		asserter.jsonPathBuffer.offer("[*]");
@@ -68,7 +68,7 @@ class JsonPathAsserter implements JsonPathVerifiable {
 	}
 
 	@Override
-	public JsonPathVerifiable isEqualTo(String value) {
+	public JsonVerifiable isEqualTo(String value) {
 		if (value == null) {
 			return isNull();
 		}
@@ -80,7 +80,7 @@ class JsonPathAsserter implements JsonPathVerifiable {
 	}
 
 	@Override
-	public JsonPathVerifiable isEqualTo(Object value) {
+	public JsonVerifiable isEqualTo(Object value) {
 		if (value == null) {
 			return isNull();
 		}
@@ -93,7 +93,7 @@ class JsonPathAsserter implements JsonPathVerifiable {
 	}
 
 	@Override
-	public JsonPathVerifiable isEqualTo(Number value) {
+	public JsonVerifiable isEqualTo(Number value) {
 		if (value == null) {
 			return isNull();
 		}
@@ -105,7 +105,7 @@ class JsonPathAsserter implements JsonPathVerifiable {
 	}
 
 	@Override
-	public JsonPathVerifiable isNull() {
+	public JsonVerifiable isNull() {
 		ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
 				jsonPathBuffer, fieldName);
 		readyToCheck.jsonPathBuffer.removeLast();
@@ -114,7 +114,7 @@ class JsonPathAsserter implements JsonPathVerifiable {
 	}
 
 	@Override
-	public JsonPathVerifiable matches(String value) {
+	public JsonVerifiable matches(String value) {
 		if (value == null) {
 			return isNull();
 		}
@@ -127,7 +127,7 @@ class JsonPathAsserter implements JsonPathVerifiable {
 	}
 
 	@Override
-	public JsonPathVerifiable isEqualTo(Boolean value) {
+	public JsonVerifiable isEqualTo(Boolean value) {
 		if (value == null) {
 			return isNull();
 		}
@@ -139,7 +139,7 @@ class JsonPathAsserter implements JsonPathVerifiable {
 	}
 
 	@Override
-	public JsonPathVerifiable value() {
+	public JsonVerifiable value() {
 		return new ReadyToCheckAsserter(parsedJson,
 				jsonPathBuffer, fieldName);
 	}
@@ -168,7 +168,7 @@ class JsonPathAsserter implements JsonPathVerifiable {
 			return true;
 		if (!getClass().equals(o.getClass()))
 			return false;
-		JsonPathAsserter jsonPathAsserter = (JsonPathAsserter) o;
+		JsonAsserter jsonPathAsserter = (JsonAsserter) o;
 		if (!fieldName.equals(jsonPathAsserter.fieldName))
 			return false;
 		return jsonPathBuffer.equals(jsonPathAsserter.jsonPathBuffer);

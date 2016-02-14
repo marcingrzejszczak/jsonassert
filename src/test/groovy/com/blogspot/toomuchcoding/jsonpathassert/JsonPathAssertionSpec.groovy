@@ -6,7 +6,7 @@ import spock.lang.Unroll
 
 import java.util.regex.Pattern
 
-import static com.blogspot.toomuchcoding.jsonpathassert.JsonPathAssertion.assertThat
+import static JsonAssertion.assertThat
 import static groovy.json.JsonOutput.toJson
 
 /**

@@ -14,12 +14,12 @@ class ArrayValueAssertion extends FieldAssertion {
 	}
 
 	@Override
-	public JsonPathVerifiable contains(Object value) {
+	public JsonVerifiable contains(Object value) {
 		return new ArrayValueAssertion(parsedJson, jsonPathBuffer, value).isEqualTo(value);
 	}
 
 	@Override
-	public JsonPathVerifiable isEqualTo(String value) {
+	public JsonVerifiable isEqualTo(String value) {
 		ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
 				jsonPathBuffer, fieldName);
 		readyToCheck.jsonPathBuffer.offer("[?(@ == " + wrapValueWithSingleQuotes(value) + ")]");
@@ -27,7 +27,7 @@ class ArrayValueAssertion extends FieldAssertion {
 	}
 
 	@Override
-	public JsonPathVerifiable isEqualTo(Number value) {
+	public JsonVerifiable isEqualTo(Number value) {
 		ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
 				jsonPathBuffer, fieldName);
 		readyToCheck.jsonPathBuffer.offer("[?(@ == " + String.valueOf(value) + ")]");
@@ -35,7 +35,7 @@ class ArrayValueAssertion extends FieldAssertion {
 	}
 
 	@Override
-	public JsonPathVerifiable matches(String value) {
+	public JsonVerifiable matches(String value) {
 		ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
 				jsonPathBuffer, fieldName);
 		readyToCheck.jsonPathBuffer.offer("[?(@ =~ /" + value + "/)]");
@@ -43,7 +43,7 @@ class ArrayValueAssertion extends FieldAssertion {
 	}
 
 	@Override
-	public JsonPathVerifiable isEqualTo(Boolean value) {
+	public JsonVerifiable isEqualTo(Boolean value) {
 		ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
 				jsonPathBuffer, fieldName);
 		readyToCheck.jsonPathBuffer.offer("[?(@ == " + String.valueOf(value) + ")]");

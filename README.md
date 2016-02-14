@@ -1,12 +1,9 @@
-[![Build Status](https://travis-ci.org/marcingrzejszczak/jsonpathassert.svg?branch=master)](https://travis-ci.org/marcingrzejszczak/jsonpathassert)
-[![Join the chat at https://gitter.im/marcingrzejszczak/jsonpathassert](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/marcingrzejszczak/jsonpathassert?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/marcingrzejszczak/jsonassert.svg?branch=master)](https://travis-ci.org/marcingrzejszczak/jsonassert)
+[![Join the chat at https://gitter.im/marcingrzejszczak/jsonassert](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/marcingrzejszczak/jsonassert?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-JSON Path assert
+JSON assert
 ===============
 
-TODO
-
-- change the name to jsonassert
 
 Changelog
 --------------------
@@ -14,4 +11,4 @@ Changelog
 
 Contact
 --------------------
-[Gitter chat](https://gitter.im/marcingrzejszczak/jsonpathassert)
+[Gitter chat](https://gitter.im/marcingrzejszczak/jsonassert)

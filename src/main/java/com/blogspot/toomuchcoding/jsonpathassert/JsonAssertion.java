@@ -10,28 +10,28 @@ import net.minidev.json.JSONArray;
 /**
  * Entry point for assertions. Use the static factory method and you're ready to go!
  *
- * @see JsonPathVerifiable
+ * @see JsonVerifiable
  *
  * @author Marcin Grzejszczak
  */
-public class JsonPathAssertion {
+public class JsonAssertion {
 	private final DocumentContext parsedJson;
 	private final LinkedList<String> jsonPathBuffer = new LinkedList<String>();
 
-	private JsonPathAssertion(DocumentContext parsedJson) {
+	private JsonAssertion(DocumentContext parsedJson) {
 		this.parsedJson = parsedJson;
 	}
 
-	public static JsonPathVerifiable assertThat(String body) {
+	public static JsonVerifiable assertThat(String body) {
 		DocumentContext parsedJson = JsonPath.parse(body);
-		return new JsonPathAssertion(parsedJson).root();
+		return new JsonAssertion(parsedJson).root();
 	}
 
-	public static JsonPathVerifiable assertThat(DocumentContext parsedJson) {
-		return new JsonPathAssertion(parsedJson).root();
+	public static JsonVerifiable assertThat(DocumentContext parsedJson) {
+		return new JsonAssertion(parsedJson).root();
 	}
 
-	private JsonPathVerifiable root() {
+	private JsonVerifiable root() {
 		NamelessArrayHavingFieldAssertion asserter = new NamelessArrayHavingFieldAssertion(parsedJson, jsonPathBuffer, "");
 		asserter.jsonPathBuffer.offer("$");
 		return asserter;
