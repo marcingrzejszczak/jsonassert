@@ -1,20 +1,6 @@
 apply plugin: 'maven'
 apply plugin: 'com.bmuschko.nexus'
 
-task javadocJar(type: Jar) {
-	classifier = 'javadoc'
-	from javadoc
-}
-
-task sourcesJar(type: Jar) {
-	classifier = 'sources'
-	from sourceSets.main.allSource
-}
-
-artifacts {
-	archives javadocJar, sourcesJar
-}
-
 modifyPom {
 	project {
 		name "$project.name"
