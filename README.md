@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/marcingrzejszczak/jsonassert.svg?branch=master)](https://travis-ci.org/marcingrzejszczak/jsonassert)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.blogspot.toomuchcoding/jsonassert/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.blogspot.toomuchcoding/jsonassert)
 [![Join the chat at https://gitter.im/marcingrzejszczak/jsonassert](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/marcingrzejszczak/jsonassert?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 JSON Assert
@@ -16,7 +17,7 @@ $[*].place.bounding_box.coordinates[*][*][?(@ == 38.791645)]
 
 Pretty isn't it? Wouldn't it be better to just read:
 
-```
+```java
 assertThat(jsonAsString).array().field("place").field("bounding_box").array("coordinates").array().contains(38.791645).value()
 ```
 
@@ -45,7 +46,7 @@ JSON path expression. Please check the Javadocs of that file for more informatio
 
 JSON Assert is really lightweight. It has only one dependency
 
-```
+```groovy
 compile "com.jayway.jsonpath:json-path:2.0.0"
 ```
 
@@ -73,7 +74,7 @@ The following is true
 
 JSON Assert expressions:
 
-```
+```java
 JsonAssertion.assertThat(json).field("some").field("nested").field("anothervalue").isEqualTo(4)
 JsonAssertion.assertThat(json).field("some").field("nested").array("withlist").contains("name").isEqualTo("name1")
 JsonAssertion.assertThat(json).field("some").field("nested").array("withlist").contains("name").isEqualTo("name2")
@@ -81,6 +82,7 @@ JsonAssertion.assertThat(json).field("some").field("nested").field("json").isEqu
 ```
 
 Respective JSON Path expressions:
+
 ```
 $.some.nested[?(@.anothervalue == 4)]
 $.some.nested.withlist[*][?(@.name == 'name1')]
@@ -112,7 +114,7 @@ The following is true
 
 JSON Assert expressions:
 
-```
+```java
 JsonAssertion.assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(38.995548).value()
 JsonAssertion.assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(-77.119759).value()
 JsonAssertion.assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(-76.909393).value()
@@ -135,8 +137,8 @@ More examples can be found in the `JsonAssertionSpec` in the test sources
 
 Just add it as your dependency (Example for Gradle)
 
-```
-testCompile `com.blogspot.toomuchcoding:jsonassert:0.0.1`
+```groovy
+testCompile `com.blogspot.toomuchcoding:jsonassert:0.1.0`
 ```
 
 Contact
