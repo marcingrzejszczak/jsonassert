@@ -60,7 +60,7 @@ public class JsonAssertion {
 	 * Helper method so that there are no clashes with other static methods of that name
 	 * @see JsonAssertion#assertThat(DocumentContext)
 	 */
-	public static JsonVerifiable assertThatson(DocumentContext parsedJson) {
+	public static JsonVerifiable assertThatJson(DocumentContext parsedJson) {
 		return assertThat(parsedJson);
 	}
 
