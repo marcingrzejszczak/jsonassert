@@ -33,12 +33,35 @@ public class JsonAssertion {
 		this.parsedJson = documentContext;
 	}
 
+	/**
+	 * Starts assertions for the JSON provided as {@code String}
+	 */
 	public static JsonVerifiable assertThat(String body) {
 		return new JsonAssertion(body).root();
 	}
 
+	/**
+	 * Starts assertions for the JSON provided as {@code DocumentContext}
+	 */
 	public static JsonVerifiable assertThat(DocumentContext parsedJson) {
 		return new JsonAssertion(parsedJson).root();
+	}
+
+	/**
+	 * Helper method so that there are no clashes with other static methods of that name
+	 *
+	 * @see JsonAssertion#assertThat(String)
+	 */
+	public static JsonVerifiable assertThatJson(String body) {
+		return assertThat(body);
+	}
+
+	/**
+	 * Helper method so that there are no clashes with other static methods of that name
+	 * @see JsonAssertion#assertThat(DocumentContext)
+	 */
+	public static JsonVerifiable assertThatson(DocumentContext parsedJson) {
+		return assertThat(parsedJson);
 	}
 
 	private JsonVerifiable root() {
