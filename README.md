@@ -138,7 +138,7 @@ More examples can be found in the `JsonAssertionSpec` in the test sources
 Just add it as your dependency (Example for Gradle)
 
 ```groovy
-testCompile `com.blogspot.toomuchcoding:jsonassert:0.1.0`
+testCompile `com.blogspot.toomuchcoding:jsonassert:0.1.2`
 ```
 
 Contact
