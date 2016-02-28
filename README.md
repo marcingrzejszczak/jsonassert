@@ -60,10 +60,11 @@ For the JSON
  {
         "some" : {
             "nested" : {
-                "json" : "with \\"val'ue",
+                "json" : "with \"val'ue",
                 "anothervalue": 4,
                 "withlist" : [
-                    { "name" :"name1"} , {"name": "name2"}
+                    { "name" :"name1"} , 
+                    {"name": "name2"}
                 ]
             }
         }
