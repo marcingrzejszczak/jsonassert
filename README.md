@@ -142,6 +142,26 @@ Just add it as your dependency (Example for Gradle)
 testCompile `com.blogspot.toomuchcoding:jsonassert:0.1.2`
 ```
 
+## AssertJ integration (SNAPSHOT)
+
+There is a possibility to use JSON Assert via AssertJ.
+
+### AssertJ 2.x
+
+Just add 
+
+```groovy
+testCompile `com.toomuchcoding.jsonassert:jsonassert-assertj-java7:0.1.0`
+```
+
+### AssertJ 3.x
+
+Just add 
+
+```groovy
+testCompile `com.toomuchcoding.jsonassert:jsonassert-assertj-java8:0.1.0`
+```
+
 Contact
 --------------------
 [Gitter chat](https://gitter.im/marcingrzejszczak/jsonassert)

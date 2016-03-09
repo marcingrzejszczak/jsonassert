@@ -1,1 +1,3 @@
-rootProject.name = "jsonassert"
+rootProject.name = "jsonassert-root"
+
+include 'assertj:assertj-java7', 'assertj:assertj-java8', 'core'
