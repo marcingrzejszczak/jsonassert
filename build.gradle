@@ -56,7 +56,7 @@ subprojects {
     }
 }
 
-configure(subprojects - [project('assertj')]) {
+configure(subprojects - [project(':assertj')]) {
 
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
@@ -85,9 +85,8 @@ configure(subprojects - [project('assertj')]) {
     }
 }
 
-project('assertj') {
-    build.enabled = false
-    jar.enabled = false
+project(':assertj') {
+    project.tasks*.enabled = false
 }
 
 
