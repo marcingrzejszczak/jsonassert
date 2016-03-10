@@ -8,6 +8,8 @@ import com.jayway.jsonpath.DocumentContext;
  * Entry point for {@link DocumentContext} {@link BDDAssertions}
  *
  * @author Marcin Grzejszczak
+ *
+ * @since 0.2.0
  */
 public class BDDJsonAssertions extends BDDAssertions {
 

@@ -23,7 +23,7 @@ scmVersion {
     createReleaseCommit = true
     releaseCommitMessage { version, position -> "Release version: ${version}\n\n[ci skip]" }
     hooks {
-        pre "fileUpdate", [file       : "README.md",
+        pre "fileUpdate", [file       : "README.adoc",
                            pattern    : { v, p -> /'com\.toomuchcoding:jsonassert:.*'/ },
                            replacement: { v, p -> "'com.toomuchcoding:jsonassert:$v'" }]
     }

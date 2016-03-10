@@ -1,5 +1,12 @@
 package com.toomuchcoding.jsonassert;
 
+/**
+ * Helper interface describing the process of current iteration
+ *
+ * @author Marcin Grzejszczak
+ *
+ * @since 0.1.0
+ */
 public interface IteratingOverArray {
     /**
      * True if is in progress of iterating over nameless array

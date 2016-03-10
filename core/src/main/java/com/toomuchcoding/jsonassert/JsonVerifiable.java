@@ -4,6 +4,8 @@ package com.toomuchcoding.jsonassert;
  * Contract to match a parsed JSON via JSON Path
  *
  * @author Marcin Grzejszczak
+ *
+ * @since 0.1.0
  */
 public interface JsonVerifiable extends IteratingOverArray {
 
