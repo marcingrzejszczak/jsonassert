@@ -329,4 +329,24 @@ public class JsonAssertionSpec extends Specification {
             noExceptionThrown()
     }
 
+    def "should generate escaped regex assertions for boolean objects in response body"() {
+        given:
+        Map json =  [
+                property2: true
+        ]
+        expect:
+        def verifiable = assertThat(toJson(json)).field("property2").matches('true|false')
+        verifiable.jsonPath() == '''$[?(@.property2 =~ /true|false/)]'''
+    }
+
+    def "should generate escaped regex assertions for numbers objects in response body"() {
+        given:
+        Map json =  [
+                property2: 50
+        ]
+        expect:
+        def verifiable = assertThat(toJson(json)).field("property2").matches('[0-9]{2}')
+        verifiable.jsonPath() == '''$[?(@.property2 =~ /[0-9]{2}/)]'''
+    }
+
 }

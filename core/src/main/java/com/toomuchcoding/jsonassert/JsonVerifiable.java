@@ -61,7 +61,7 @@ public interface JsonVerifiable extends IteratingOverArray {
     JsonVerifiable isNull() throws IllegalStateException;
 
     /**
-     * Regex matching
+     * Regex matching for strings
      *
      * @throws IllegalStateException - if JSON Path is not matched for the parsed JSON
      */

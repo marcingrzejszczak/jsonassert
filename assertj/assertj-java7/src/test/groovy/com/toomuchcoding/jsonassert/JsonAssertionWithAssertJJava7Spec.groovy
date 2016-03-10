@@ -5,7 +5,8 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static JsonAssertions.assertThat
+import static com.toomuchcoding.jsonassert.JsonAssertions.assertThat
+import static groovy.json.JsonOutput.toJson
 /**
  * @author Marcin Grzejszczak
  */
@@ -29,6 +30,7 @@ class JsonAssertionWithAssertJJava7Spec extends Specification {
     def 'should convert a json with a map as root to a map of path to value '() {
         expect:
             assertThat(JsonPath.parse(json1)).field("some").field("nested").field("anothervalue").isEqualTo(4)
+            BDDJsonAssertions.then(JsonPath.parse(json1)).field("some").field("nested").field("anothervalue").isEqualTo(4)
             assertThat(JsonPath.parse(json1)).field("some").field("nested").array("withlist").contains("name").isEqualTo("name1")
             assertThat(JsonPath.parse(json1)).field("some").field("nested").array("withlist").contains("name").isEqualTo("name2")
             assertThat(JsonPath.parse(json1)).field("some").field("nested").field("json").isEqualTo("with \"val'ue")
@@ -225,6 +227,25 @@ class JsonAssertionWithAssertJJava7Spec extends Specification {
         then:
             AssertionError assertionError = thrown(AssertionError)
             assertionError.message == '''Expected JSON to match JSON Path <$.property2[?(@.property3 == 'c')]> but it didn't'''
+    }
+
+
+    def "should generate escaped regex assertions for boolean objects in response body"() {
+        given:
+        Map json =  [
+                property2: true
+        ]
+        expect:
+            assertThat(JsonPath.parse(toJson(json))).field("property2").matches('true|false')
+    }
+
+    def "should generate escaped regex assertions for numbers objects in response body"() {
+        given:
+        Map json =  [
+                property2: 50
+        ]
+        expect:
+            assertThat(JsonPath.parse(toJson(json))).field("property2").matches('[0-9]{2}')
     }
 
 
