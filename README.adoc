@@ -8,6 +8,12 @@ image::https://badges.gitter.im/Join%20Chat.svg[Gitter, link="https://gitter.im/
 
 Small library for those who have a hard time understanding the complexity of JSON Path.
 
+:toc:
+:toc-placement!:
+
+toc::[]
+
+
 = Rationale
 
 Have you ever met such a JSON Path expression?
@@ -151,7 +157,7 @@ More examples can be found in the `JsonAssertionSpec` in the test sources
 
 Just add it as your dependency (Example for Gradle)
 
-[source,groovy,subs="lib_version"]
+[source,groovy,subs="attributes,verbatim"]
 ----
 testCompile `com.toomuchcoding:jsonassert:{lib_version}`
 ----
@@ -181,7 +187,7 @@ com.toomuchcoding.jsonassert.BDDJsonAssertions.then(JsonVerifiable jsonVerifiabl
 
 Just add 
 
-[source,groovy,subs="lib_version"]
+[source,groovy,subs="attributes,verbatim"]
 ----
 testCompile 'com.toomuchcoding.jsonassert:jsonassert-assertj-java7:{lib_version}'
 ----
@@ -190,10 +196,10 @@ testCompile 'com.toomuchcoding.jsonassert:jsonassert-assertj-java7:{lib_version}
 
 Just add 
 
-[source,groovy,subs="lib_version"]
-----
+[source,groovy,subs="attributes,verbatim"]
+--
 testCompile 'com.toomuchcoding.jsonassert:jsonassert-assertj-java8:{lib_version}'
-----
+--
 
 = Contact
 
