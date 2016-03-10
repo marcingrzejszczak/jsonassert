@@ -13,7 +13,6 @@ apply plugin: 'io.codearte.nexus-staging'
 
 nexusStaging {
     packageGroup = "com.toomuchcoding"
-    stagingProfileId = '15254b07c5e0c'
 }
 
 apply plugin: "pl.allegro.tech.build.axion-release"
@@ -40,8 +39,6 @@ subprojects {
     }
 
     apply plugin: 'groovy'
-    apply plugin: 'maven'
-    apply plugin: 'maven-publish'
 
     sourceCompatibility = 1.7
 
@@ -57,6 +54,12 @@ subprojects {
     test {
         maxParallelForks = Runtime.runtime.availableProcessors() / 2
     }
+}
+
+configure(subprojects - [project('assertj')]) {
+
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
 
     publishing {
         publications {
