@@ -1,7 +1,7 @@
 :lib_version: 0.2.0
 
 image::https://travis-ci.org/marcingrzejszczak/jsonassert.svg?branch=master[Build Status, link=https://travis-ci.org/marcingrzejszczak/jsonassert]
-image::https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding/jsonassert/badge.svg?style=plastic[Maven Central, link="https://maven-badges.herokuapp.com/maven-central/com.blogspot.toomuchcoding/jsonassert"]
+image::https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding/jsonassert/badge.svg?style=plastic[Maven Central, link="https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding/jsonassert"]
 image::https://badges.gitter.im/Join%20Chat.svg[Gitter, link="https://gitter.im/marcingrzejszczak/jsonassert?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"]
 
 = JSON Assert
@@ -106,7 +106,7 @@ $.some.nested.withlist[*][?(@.name == 'name2')]
 $.some.nested[?(@.json == 'with "val\\'ue')]
 ----
 
-### Example 2
+=== Example 2
 
 For the JSON
 
@@ -149,11 +149,11 @@ $[*].place.bounding_box.coordinates[*][*][?(@ == -76.909393)]
 $[*].place.bounding_box.coordinates[*][*][?(@ == 38.791645)]
 ----
 
-### More examples
+=== More examples
 
 More examples can be found in the `JsonAssertionSpec` in the test sources
 
-## How to add it
+== How to add it
 
 Just add it as your dependency (Example for Gradle)
 
@@ -162,7 +162,7 @@ Just add it as your dependency (Example for Gradle)
 testCompile `com.toomuchcoding.jsonassert:jsonassert:{lib_version}`
 ----
 
-## AssertJ integration
+== AssertJ integration (since 0.2.0)
 
 There is a possibility to use JSON Assert via AssertJ. Regardless of which version you'll choose
 you have the same class that you can use to start the fluent assertion
@@ -183,7 +183,7 @@ com.toomuchcoding.jsonassert.BDDJsonAssertions.then(DocumentContext context);
 com.toomuchcoding.jsonassert.BDDJsonAssertions.then(JsonVerifiable jsonVerifiable);
 ----
 
-### AssertJ 2.x
+=== AssertJ 2.x
 
 Just add 
 
@@ -192,7 +192,7 @@ Just add
 testCompile 'com.toomuchcoding.jsonassert:jsonassert-assertj-java7:{lib_version}'
 ----
 
-### AssertJ 3.x
+=== AssertJ 3.x
 
 Just add 
 
@@ -200,6 +200,13 @@ Just add
 --
 testCompile 'com.toomuchcoding.jsonassert:jsonassert-assertj-java8:{lib_version}'
 --
+
+= Migrations
+
+== From 0.1.x -> 0.2.0
+
+- Convert all project imports from `com.blogspot.toomuchcoding:jsonassert` to `com.toomuchcoding.jsonassert:jsonassert`
+- Convert all code imports from `com.blogspot.toomuchcoding.jsonassert` to `com.toomuchcoding.jsonassert`
 
 = Contact
 
