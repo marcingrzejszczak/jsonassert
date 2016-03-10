@@ -159,7 +159,7 @@ Just add it as your dependency (Example for Gradle)
 
 [source,groovy,subs="attributes,verbatim"]
 ----
-testCompile `com.toomuchcoding:jsonassert:{lib_version}`
+testCompile `com.toomuchcoding.jsonassert:jsonassert:{lib_version}`
 ----
 
 ## AssertJ integration

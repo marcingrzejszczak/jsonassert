@@ -28,11 +28,11 @@ scmVersion {
     }
 }
 
-group = 'com.toomuchcoding.jsonassert'
-project.version = scmVersion.version
-description = "JSON assertion library"
-
 subprojects {
+
+    group = 'com.toomuchcoding.jsonassert'
+    project.version = scmVersion.version
+    description = "JSON assertion library"
 
     repositories {
         jcenter()
@@ -83,6 +83,11 @@ configure(subprojects - [project('assertj')]) {
     if (!version.contains('SNAPSHOT')) {
         apply from: "$rootDir/gradle/release.gradle"
     }
+}
+
+project('assertj') {
+    build.enabled = false
+    jar.enabled = false
 }
 
 

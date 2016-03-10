@@ -1,4 +1,4 @@
 dependencies {
-	compile project(':core')
+	compile project(':jsonassert')
 	compile 'org.assertj:assertj-core:2.3.0'
 }
