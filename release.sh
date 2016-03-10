@@ -1,6 +1,2 @@
 #!/usr/bin/env bash
-./gradlew createRelease
-./gradlew uploadArchives
-./gradlew closeRepository
-./gradlew promoteRepository
-./gradlew pushRelease
+./gradlew clean build && ./gradlew createRelease && ./gradlew uploadArchives && ./gradlew closeRepository && ./gradlew promoteRepository && ./gradlew pushRelease
