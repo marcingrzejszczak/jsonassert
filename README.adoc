@@ -1,64 +1,69 @@
 :lib_version: 0.2.0
 
-[![Build Status](https://travis-ci.org/marcingrzejszczak/jsonassert.svg?branch=master)](https://travis-ci.org/marcingrzejszczak/jsonassert)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding/jsonassert/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.blogspot.toomuchcoding/jsonassert)
-[![Join the chat at https://gitter.im/marcingrzejszczak/jsonassert](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/marcingrzejszczak/jsonassert?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+image::https://travis-ci.org/marcingrzejszczak/jsonassert.svg?branch=master[Build Status, link=https://travis-ci.org/marcingrzejszczak/jsonassert]
+image::https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding/jsonassert/badge.svg?style=plastic[Maven Central, link="https://maven-badges.herokuapp.com/maven-central/com.blogspot.toomuchcoding/jsonassert"]
+image::https://badges.gitter.im/Join%20Chat.svg[Gitter, link="https://gitter.im/marcingrzejszczak/jsonassert?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"]
 
-JSON Assert
-===============
+= JSON Assert
 
 Small library for those who have a hard time understanding the complexity of JSON Path.
 
-## Rationale
+= Rationale
 
 Have you ever met such a JSON Path expression?
 
-```
+[source]
+----
 $[*].place.bounding_box.coordinates[*][*][?(@ == 38.791645)]
-```
+----
 
 Pretty isn't it? Wouldn't it be better to just read:
 
-```java
+[source,java]
+----
 assertThat(jsonAsString).array().field("place").field("bounding_box").array("coordinates").array().contains(38.791645).value()
-```
+----
 
 JSON Assert to the rescue!
 
-## Fast intro
+== Fast intro
 
 The library has two main classes. One is `JsonAssertion` that gives you public static methods:
 
-```java
+[source,java]
+----
 public static JsonVerifiable assertThat(String body)
-```
+----
 
 NOTE! The aforementioned version caches the `DocumentContext` for the provided JSON.
 
 and
 
-```java
+[source,java]
+----
 public static JsonVerifiable assertThat(DocumentContext parsedJson)
-```
+----
 
 Both these methods give return the public `JsonVerifiable` interface which is a fluent interface with which you can build your
 JSON path expression. Please check the Javadocs of that file for more information.
 
-## Dependencies
+== Dependencies
 
 JSON Assert is really lightweight. It has only one dependency
 
-```groovy
+[source,groovy]
+----
 compile "com.jayway.jsonpath:json-path:2.2.0"
-```
+----
 
-## Examples
+== Examples
 
-### Example 1
+=== Example 1
 
 For the JSON
 
-```json
+[source,json]
+----
  {
         "some" : {
             "nested" : {
@@ -71,33 +76,36 @@ For the JSON
             }
         }
     }
-```
+----
 
 The following is true
 
 JSON Assert expressions:
 
-```java
+[source,java]
+----
 JsonAssertion.assertThat(json).field("some").field("nested").field("anothervalue").isEqualTo(4)
 JsonAssertion.assertThat(json).field("some").field("nested").array("withlist").contains("name").isEqualTo("name1")
 JsonAssertion.assertThat(json).field("some").field("nested").array("withlist").contains("name").isEqualTo("name2")
 JsonAssertion.assertThat(json).field("some").field("nested").field("json").isEqualTo("with \"val'ue")
-```
+----
 
 Respective JSON Path expressions:
 
-```
+[source]
+----
 $.some.nested[?(@.anothervalue == 4)]
 $.some.nested.withlist[*][?(@.name == 'name1')]
 $.some.nested.withlist[*][?(@.name == 'name2')]
 $.some.nested[?(@.json == 'with "val\\'ue')]
-```
+----
 
 ### Example 2
 
 For the JSON
 
-```json
+[source,json] 
+----
  [{
     "place":
     {
@@ -111,26 +119,29 @@ For the JSON
         }
     }
 }]
-```
+----
 
 The following is true
 
 JSON Assert expressions:
 
-```java
+[source,java]
+----
 JsonAssertion.assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(38.995548).value()
 JsonAssertion.assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(-77.119759).value()
 JsonAssertion.assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(-76.909393).value()
 JsonAssertion.assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(38.791645).value()
-```
+----
 
 Respective JSON Path expressions:
-```
+
+[source]
+----
 $[*].place.bounding_box.coordinates[*][*][?(@ == 38.995548)]
 $[*].place.bounding_box.coordinates[*][*][?(@ == -77.119759)]
 $[*].place.bounding_box.coordinates[*][*][?(@ == -76.909393)]
 $[*].place.bounding_box.coordinates[*][*][?(@ == 38.791645)]
-```
+----
 
 ### More examples
 
@@ -140,9 +151,10 @@ More examples can be found in the `JsonAssertionSpec` in the test sources
 
 Just add it as your dependency (Example for Gradle)
 
-```groovy
+[source,groovy,subs="lib_version"]
+----
 testCompile `com.toomuchcoding:jsonassert:{lib_version}`
-```
+----
 
 ## AssertJ integration
 
@@ -151,34 +163,38 @@ you have the same class that you can use to start the fluent assertion
 
 The standard version
 
-```
+[source,java]
+----
 com.toomuchcoding.jsonassert.JsonAssertions.assertThat(DocumentContext context);
 com.toomuchcoding.jsonassert.JsonAssertions.assertThat(JsonVerifiable jsonVerifiable);
-```
+----
 
 or the BDD version
 
-```
+[source,java]
+----
 com.toomuchcoding.jsonassert.BDDJsonAssertions.then(DocumentContext context);
 com.toomuchcoding.jsonassert.BDDJsonAssertions.then(JsonVerifiable jsonVerifiable);
-```
+----
 
 ### AssertJ 2.x
 
 Just add 
 
-```groovy
-testCompile `com.toomuchcoding.jsonassert:jsonassert-assertj-java7:{lib_version}`
-```
+[source,groovy,subs="lib_version"]
+----
+testCompile 'com.toomuchcoding.jsonassert:jsonassert-assertj-java7:{lib_version}'
+----
 
 ### AssertJ 3.x
 
 Just add 
 
-```groovy
-testCompile `com.toomuchcoding.jsonassert:jsonassert-assertj-java8:{lib_version}`
-```
+[source,groovy,subs="lib_version"]
+----
+testCompile 'com.toomuchcoding.jsonassert:jsonassert-assertj-java8:{lib_version}'
+----
 
-Contact
---------------------
-[Gitter chat](https://gitter.im/marcingrzejszczak/jsonassert)
+= Contact
+
+https://gitter.im/marcingrzejszczak/jsonassert[Gitter chat]
