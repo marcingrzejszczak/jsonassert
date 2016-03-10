@@ -1,14 +1,15 @@
 package com.toomuchcoding.jsonassert;
 
-import com.jayway.jsonpath.DocumentContext;
 import org.assertj.core.api.BDDAssertions;
 
+import com.jayway.jsonpath.DocumentContext;
+
 /**
- * Entry point for DocumentContext BDDAssertions
+ * Entry point for {@link DocumentContext} {@link BDDAssertions}
  *
  * @author Marcin Grzejszczak
  */
-public class JsonBDDAssertions extends BDDAssertions {
+public class BDDJsonAssertions extends BDDAssertions {
 
     public static JsonPathAssert then(DocumentContext actual) {
         return new JsonPathAssert(actual);

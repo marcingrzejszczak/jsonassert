@@ -10,7 +10,7 @@ import org.assertj.core.api.AbstractAssert;
  * {@link DocumentContext} or {@link JsonVerifiable}.
  *
  * Remember that the order of execution matters since it's building the JSON Path
- * in order.
+ * in the provided sequence.
  * 
  * @author Marcin Grzejszczak
  */
@@ -25,7 +25,7 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
 
     /**
-     * see {@link JsonVerifiable#contains(Object)}
+     * @see JsonVerifiable#contains(Object)
      */
     public JsonPathAssert contains(Object value) {
         isNotNull();
@@ -33,7 +33,7 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
 
     /**
-     * see {@link JsonVerifiable#field(Object)}
+     * @see JsonVerifiable#field(Object)
      */
     public JsonPathAssert field(Object value) {
         isNotNull();
@@ -41,7 +41,7 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
     
     /**
-     * see {@link JsonVerifiable#array()} (Object)}
+     * @see JsonVerifiable#array()} (Object)
      */
     public JsonPathAssert array(Object value) {
         isNotNull();
@@ -49,7 +49,7 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
 
     /**
-     * see {@link JsonVerifiable#arrayField()}
+     * @see JsonVerifiable#arrayField()
      */
     public JsonPathAssert arrayField() {
         isNotNull();
@@ -57,7 +57,7 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
     
     /**
-     * see {@link JsonVerifiable#array()}
+     * @see JsonVerifiable#array()
      */
     public JsonPathAssert array() {
         isNotNull();
@@ -65,7 +65,7 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
 
     /**
-     * see {@link JsonVerifiable#isEqualTo(String)}
+     * @see JsonVerifiable#isEqualTo(String)
      */
     public JsonPathAssert isEqualTo(String value) {
         isNotNull();
@@ -79,7 +79,7 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
 
     /**
-     * see {@link JsonVerifiable#isEqualTo(Number)}
+     * @see JsonVerifiable#isEqualTo(Number)
      */
     public JsonPathAssert isEqualTo(Number value) {
         isNotNull();
@@ -93,7 +93,7 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
 
     /**
-     * see {@link JsonVerifiable#matches(String)} )}
+     * @see JsonVerifiable#matches(String)
      */
     public JsonPathAssert matches(String value) {
         isNotNull();
@@ -107,7 +107,7 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
 
     /**
-     * see {@link JsonVerifiable#isEqualTo(Boolean)}
+     * @see JsonVerifiable#isEqualTo(Boolean)
      */
     public JsonPathAssert isEqualTo(Boolean value) {
         isNotNull();
@@ -121,7 +121,7 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
 
     /**
-     * see {@link JsonVerifiable#value()}
+     * @see JsonVerifiable#value()
      */
     public JsonPathAssert value() {
         isNotNull();
@@ -135,7 +135,7 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
 
     /**
-     * see {@link JsonVerifiable#isNull()}
+     * @see JsonVerifiable#isNull()
      */
     @Override
     public void isNull() {
@@ -148,7 +148,7 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
 
     /**
-     * see {@link JsonVerifiable#matchesJsonPath(String)}
+     * @see JsonVerifiable#matchesJsonPath(String)
      */
     public JsonPathAssert matchesJsonPath(String jsonPath) {
         isNotNull();

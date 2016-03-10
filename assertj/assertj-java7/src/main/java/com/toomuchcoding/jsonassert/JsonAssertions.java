@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions;
 import com.jayway.jsonpath.DocumentContext;
 
 /**
- * Entry point for DocumentContext Assertions
+ * Entry point for {@link DocumentContext} {@link Assertions}
  *
  * @author Marcin Grzejszczak
  */

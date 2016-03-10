@@ -144,7 +144,22 @@ testCompile `com.blogspot.toomuchcoding:jsonassert:0.1.2`
 
 ## AssertJ integration (SNAPSHOT)
 
-There is a possibility to use JSON Assert via AssertJ.
+There is a possibility to use JSON Assert via AssertJ. Regardless of which version you'll choose
+you have the same class that you can use to start the fluent assertion
+
+The standard version
+
+```
+com.toomuchcoding.jsonassert.JsonAssertions.assertThat(DocumentContext context);
+com.toomuchcoding.jsonassert.JsonAssertions.assertThat(JsonVerifiable jsonVerifiable);
+```
+
+or the BDD version
+
+```
+com.toomuchcoding.jsonassert.BDDJsonAssertions.then(DocumentContext context);
+com.toomuchcoding.jsonassert.BDDJsonAssertions.then(JsonVerifiable jsonVerifiable);
+```
 
 ### AssertJ 2.x
 
