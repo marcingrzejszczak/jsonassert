@@ -56,7 +56,7 @@ subprojects {
     }
 }
 
-configure(subprojects - [project(':assertj')]) {
+configure(subprojects) {
 
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
@@ -84,11 +84,6 @@ configure(subprojects - [project(':assertj')]) {
         apply from: "$rootDir/gradle/release.gradle"
     }
 }
-
-project(':assertj') {
-    project.tasks*.enabled = false
-}
-
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.11'
