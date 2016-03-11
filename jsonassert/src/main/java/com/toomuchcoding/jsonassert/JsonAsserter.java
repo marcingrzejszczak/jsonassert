@@ -130,7 +130,7 @@ class JsonAsserter implements JsonVerifiable {
                 jsonPathBuffer, fieldName, jsonAsserterConfiguration);
         readyToCheck.jsonPathBuffer.removeLast();
         readyToCheck.jsonPathBuffer.offer("[?(@." + String.valueOf(fieldName)
-                + " =~ /" + stringWithEscapedSingleQuotes(value) + "/)]");
+                + " =~ /" + stringWithEscapedSingleQuotesForRegex(value) + "/)]");
         updateCurrentBuffer(readyToCheck);
         readyToCheck.checkBufferedJsonPathString();
         return readyToCheck;
@@ -167,7 +167,14 @@ class JsonAsserter implements JsonVerifiable {
             log.warn("WARNING!!! Overriding verification of the JSON Path. Your tests may pass even though they shouldn't");
             return;
         }
-        if (parsedJson.read(jsonPathString, JSONArray.class).isEmpty()) {
+        boolean empty = false;
+        try {
+            empty = parsedJson.read(jsonPathString, JSONArray.class).isEmpty();
+        } catch (Exception e) {
+           log.error("Exception occurred while trying to match JSON Path [{}]", jsonPathString, e);
+           throw new RuntimeException(e);
+        }
+        if (empty) {
             throw new IllegalStateException("Parsed JSON doesn't match the JSON path [" + jsonPathString + "]");
         }
     }
@@ -239,6 +246,10 @@ class JsonAsserter implements JsonVerifiable {
     protected static String stringWithEscapedSingleQuotes(Object object) {
         String stringValue = object.toString();
         return stringValue.replaceAll("'", "\\\\'");
+    }
+
+    protected static String stringWithEscapedSingleQuotesForRegex(Object object) {
+        return stringWithEscapedSingleQuotes(object).replace("/", "\\/");
     }
 
     protected String wrapValueWithSingleQuotes(Object value) {

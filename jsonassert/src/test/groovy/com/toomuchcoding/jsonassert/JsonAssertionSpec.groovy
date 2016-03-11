@@ -1,5 +1,7 @@
 package com.toomuchcoding.jsonassert
 
+import com.jayway.jsonpath.DocumentContext
+import com.jayway.jsonpath.JsonPath
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -347,6 +349,20 @@ public class JsonAssertionSpec extends Specification {
         expect:
         def verifiable = assertThat(toJson(json)).field("property2").matches('[0-9]{2}')
         verifiable.jsonPath() == '''$[?(@.property2 =~ /[0-9]{2}/)]'''
+    }
+
+    def "should escape regular expression properly"() {
+        given:
+        String json = """
+			{
+				"path" : "/api/12",
+				"correlationId" : 123456
+			}
+		"""
+        expect:
+        DocumentContext parsedJson = JsonPath.parse(json)
+        def verifiable = assertThatJson(parsedJson).field("path").matches("^/api/[0-9]{2}\$")
+        verifiable.jsonPath() == '''$[?(@.path =~ /^\\/api\\/[0-9]{2}$/)]'''
     }
 
 }

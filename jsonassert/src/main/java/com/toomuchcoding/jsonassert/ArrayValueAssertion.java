@@ -40,7 +40,7 @@ class ArrayValueAssertion extends FieldAssertion {
     public JsonVerifiable matches(String value) {
         ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
                 jsonPathBuffer, fieldName, jsonAsserterConfiguration);
-        readyToCheck.jsonPathBuffer.offer("[?(@ =~ /" + value + "/)]");
+        readyToCheck.jsonPathBuffer.offer("[?(@ =~ /" + stringWithEscapedSingleQuotesForRegex(value) + "/)]");
         return readyToCheck;
     }
 
