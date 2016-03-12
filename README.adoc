@@ -1,7 +1,7 @@
 :lib_version: 0.2.1
 
 image::https://travis-ci.org/marcingrzejszczak/jsonassert.svg?branch=master[Build Status, link=https://travis-ci.org/marcingrzejszczak/jsonassert]
-image::https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding/jsonassert/badge.svg?style=plastic[Maven Central, link="https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding/jsonassert"]
+image::https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding.jsonassert/jsonassert/badge.svg?style=plastic[Maven Central, link="https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding.jsonassert/jsonassert"]
 image::https://badges.gitter.im/Join%20Chat.svg[Gitter, link="https://gitter.im/marcingrzejszczak/jsonassert?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"]
 
 = JSON Assert
@@ -52,6 +52,15 @@ public static JsonVerifiable assertThat(DocumentContext parsedJson)
 
 Both these methods give return the public `JsonVerifiable` interface which is a fluent interface with which you can build your
 JSON path expression. Please check the Javadocs of that file for more information.
+
+== How to add it
+
+Just add it as your dependency (Example for Gradle)
+
+[source,groovy,subs="attributes,verbatim"]
+----
+testCompile `com.toomuchcoding.jsonassert:jsonassert:{lib_version}`
+----
 
 == Dependencies
 
@@ -153,14 +162,7 @@ $[*].place.bounding_box.coordinates[*][*][?(@ == 38.791645)]
 
 More examples can be found in the `JsonAssertionSpec` in the test sources
 
-== How to add it
-
-Just add it as your dependency (Example for Gradle)
-
-[source,groovy,subs="attributes,verbatim"]
-----
-testCompile `com.toomuchcoding.jsonassert:jsonassert:{lib_version}`
-----
+= Features
 
 == AssertJ integration (since 0.2.0)
 
