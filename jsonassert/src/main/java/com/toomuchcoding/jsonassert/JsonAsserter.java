@@ -164,7 +164,7 @@ class JsonAsserter implements JsonVerifiable {
 
     private void check(String jsonPathString) {
         if (jsonAsserterConfiguration.ignoreJsonPathException) {
-            log.warn("WARNING!!! Overriding verification of the JSON Path. Your tests may pass even though they shouldn't");
+            log.trace("WARNING!!! Overriding verification of the JSON Path. Your tests may pass even though they shouldn't");
             return;
         }
         boolean empty = false;
