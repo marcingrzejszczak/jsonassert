@@ -167,7 +167,7 @@ class JsonAsserter implements JsonVerifiable {
             log.trace("WARNING!!! Overriding verification of the JSON Path. Your tests may pass even though they shouldn't");
             return;
         }
-        boolean empty = false;
+        boolean empty;
         try {
             empty = parsedJson.read(jsonPathString, JSONArray.class).isEmpty();
         } catch (Exception e) {

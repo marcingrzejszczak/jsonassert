@@ -34,7 +34,9 @@ JSON Assert to the rescue!
 
 == Fast intro
 
-The library has two main classes. One is `JsonAssertion` that gives you public static methods:
+=== Assertions
+
+The library has a couple of main classes. One is `JsonAssertion` that gives you public static methods:
 
 [source,java]
 ----
@@ -52,6 +54,30 @@ public static JsonVerifiable assertThat(DocumentContext parsedJson)
 
 Both these methods give return the public `JsonVerifiable` interface which is a fluent interface with which you can build your
 JSON path expression. Please check the Javadocs of that file for more information.
+
+=== Building JSON Paths
+
+As you could see it's not that easy to build a JSON Path. With JSON Assert you can use the `JsonPath` class to finally
+build the JSON Paths yourself! This is the contract for the `JsonPath` class:
+
+[source,java]
+----
+/**
+ * Returns a builder of {@link JsonVerifiable} with which you can build your
+ * JSON Path. Once finished just call {@link JsonVerifiable#jsonPath()} to get
+ * JSON Path as String.
+ */
+public static JsonVerifiable builder()
+----
+
+and when you call:
+
+[source,java]
+----
+JsonPath.builder().field("some").field("nested").array("withlist").contains("name").isEqualTo("name1").jsonPath();
+----
+
+you will receive `$.some.nested.withlist[*][?(@.name == 'name1')]` String.
 
 == How to add it
 
@@ -162,7 +188,7 @@ $[*].place.bounding_box.coordinates[*][*][?(@ == 38.791645)]
 
 More examples can be found in the `JsonAssertionSpec` in the test sources
 
-= Features
+= Additional features
 
 == AssertJ integration (since 0.2.0)
 
