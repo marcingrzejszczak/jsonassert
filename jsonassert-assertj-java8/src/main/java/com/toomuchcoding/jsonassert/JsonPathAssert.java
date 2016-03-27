@@ -1,7 +1,8 @@
 package com.toomuchcoding.jsonassert;
 
-import com.jayway.jsonpath.DocumentContext;
 import org.assertj.core.api.AbstractAssert;
+
+import com.jayway.jsonpath.DocumentContext;
 
 /**
  * A AssertJ version of JSON Assert.
@@ -38,6 +39,14 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
      * @see JsonVerifiable#field(Object)
      */
     public JsonPathAssert field(Object value) {
+        isNotNull();
+        return new JsonPathAssert(actual.field(value));
+    }
+
+    /**
+     * @see JsonVerifiable#field(String...)
+     */
+    public JsonPathAssert field(String... value) {
         isNotNull();
         return new JsonPathAssert(actual.field(value));
     }

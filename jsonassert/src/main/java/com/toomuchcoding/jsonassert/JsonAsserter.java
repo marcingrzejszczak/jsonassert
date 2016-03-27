@@ -1,12 +1,14 @@
 package com.toomuchcoding.jsonassert;
 
-import com.jayway.jsonpath.DocumentContext;
-import net.minidev.json.JSONArray;
+import java.util.LinkedList;
+import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedList;
-import java.util.regex.Pattern;
+import com.jayway.jsonpath.DocumentContext;
+
+import net.minidev.json.JSONArray;
 
 class JsonAsserter implements JsonVerifiable {
 
@@ -38,6 +40,15 @@ class JsonAsserter implements JsonVerifiable {
         FieldAssertion asserter = new FieldAssertion(parsedJson, jsonPathBuffer, value, jsonAsserterConfiguration);
         asserter.jsonPathBuffer.offer("." + String.valueOf(value));
         return asserter;
+    }
+
+    @Override
+    public FieldAssertion field(String... fields) {
+        FieldAssertion assertion = null;
+        for(String field : fields) {
+            assertion = assertion == null ? field(field) : assertion.field(field);
+        }
+        return assertion;
     }
 
     @Override

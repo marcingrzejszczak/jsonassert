@@ -35,10 +35,11 @@ public class JsonAssertionSpec extends Specification {
         where:
             verifiable                                                                                           || expectedJsonPath
             assertThat(json1).field("some").field("nested").field("anothervalue").isEqualTo(4)                    || '''$.some.nested[?(@.anothervalue == 4)]'''
-            assertThatJson(json1).field("some").field("nested").field("anothervalue").isEqualTo(4)                    || '''$.some.nested[?(@.anothervalue == 4)]'''
+            assertThatJson(json1).field("some").field("nested").field("anothervalue").isEqualTo(4)                || '''$.some.nested[?(@.anothervalue == 4)]'''
             assertThat(json1).field("some").field("nested").array("withlist").contains("name").isEqualTo("name1") || '''$.some.nested.withlist[*][?(@.name == 'name1')]'''
             assertThat(json1).field("some").field("nested").array("withlist").contains("name").isEqualTo("name2") || '''$.some.nested.withlist[*][?(@.name == 'name2')]'''
             assertThat(json1).field("some").field("nested").field("json").isEqualTo("with \"val'ue")              || '''$.some.nested[?(@.json == 'with "val\\'ue')]'''
+            assertThat(json1).field("some", "nested", "json").isEqualTo("with \"val'ue")                          || '''$.some.nested[?(@.json == 'with "val\\'ue')]'''
     }
 
     @Shared String json2 =  '''{

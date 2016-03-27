@@ -34,6 +34,7 @@ class JsonAssertionWithAssertJJava7Spec extends Specification {
             assertThat(JsonPath.parse(json1)).field("some").field("nested").array("withlist").contains("name").isEqualTo("name1")
             assertThat(JsonPath.parse(json1)).field("some").field("nested").array("withlist").contains("name").isEqualTo("name2")
             assertThat(JsonPath.parse(json1)).field("some").field("nested").field("json").isEqualTo("with \"val'ue")
+            assertThat(JsonPath.parse(json1)).field("some", "nested", "json").isEqualTo("with \"val'ue")
     }
 
     @Shared String json2 =  '''{

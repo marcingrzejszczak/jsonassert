@@ -16,6 +16,7 @@ class JsonPathSpec extends Specification {
             JsonPath.builder().field("some").field("nested").array("withlist").contains("name").isEqualTo("name1").jsonPath() || '''$.some.nested.withlist[*][?(@.name == 'name1')]'''
             JsonPath.builder().field("some").field("nested").array("withlist").contains("name").isEqualTo("name2").jsonPath() || '''$.some.nested.withlist[*][?(@.name == 'name2')]'''
             JsonPath.builder().field("some").field("nested").field("json").isEqualTo("with \"val'ue").jsonPath()              || '''$.some.nested[?(@.json == 'with "val\\'ue')]'''
+            JsonPath.builder().field("some", "nested", "json").isEqualTo("with \"val'ue").jsonPath()                          || '''$.some.nested[?(@.json == 'with "val\\'ue')]'''
     }
 
 }

@@ -20,6 +20,12 @@ public interface JsonVerifiable extends IteratingOverArray {
     JsonVerifiable field(Object value);
 
     /**
+     * Field assertions. Traverses through the list of fields and
+     * adds a JSON Path entry for each one.
+     */
+    JsonVerifiable field(String... fields);
+
+    /**
      * When you want to assert values in a array with a given name
      */
     JsonVerifiable array(Object value);
