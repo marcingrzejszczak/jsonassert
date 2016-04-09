@@ -2,6 +2,7 @@ package com.toomuchcoding.jsonassert
 
 import com.jayway.jsonpath.DocumentContext
 import com.jayway.jsonpath.JsonPath
+import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -356,15 +357,43 @@ public class JsonAssertionSpec extends Specification {
     def "should escape regular expression properly"() {
         given:
         String json = """
-			{
-				"path" : "/api/12",
-				"correlationId" : 123456
-			}
-		"""
+            {
+                "path" : "/api/12",
+                "correlationId" : 123456
+            }
+        """
         expect:
         DocumentContext parsedJson = JsonPath.parse(json)
         def verifiable = assertThatJson(parsedJson).field("path").matches("^/api/[0-9]{2}\$")
         verifiable.jsonPath() == '''$[?(@.path =~ /^\\/api\\/[0-9]{2}$/)]'''
+    }
+
+    @Issue("Accurest#193")
+    def "should escape single quotes in a quoted string"() {
+        given:
+        String json = """
+            {
+                "text" : "text with 'quotes' inside"
+            }
+        """
+        expect:
+        DocumentContext parsedJson = JsonPath.parse(json)
+        def verifiable = assertThatJson(parsedJson).field("text").isEqualTo("text with 'quotes' inside")
+        verifiable.jsonPath() == '''$[?(@.text == 'text with \\'quotes\\' inside')]'''
+    }
+    
+    @Issue("Accurest#193")
+    def "should escape double quotes in a quoted string"() {
+        given:
+            String json = """
+                {
+                    "text" : "text with \\"quotes\\" inside"
+                }
+            """
+        expect:
+            DocumentContext parsedJson = JsonPath.parse(json)
+            def verifiable = assertThatJson(parsedJson).field("text").isEqualTo('''text with "quotes" inside''')
+            verifiable.jsonPath() == '''$[?(@.text == 'text with "quotes" inside')]'''
     }
 
 }
