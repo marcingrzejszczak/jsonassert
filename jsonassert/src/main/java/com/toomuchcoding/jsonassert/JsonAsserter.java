@@ -1,14 +1,12 @@
 package com.toomuchcoding.jsonassert;
 
-import java.util.LinkedList;
-import java.util.regex.Pattern;
-
+import com.jayway.jsonpath.DocumentContext;
+import net.minidev.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jayway.jsonpath.DocumentContext;
-
-import net.minidev.json.JSONArray;
+import java.util.LinkedList;
+import java.util.regex.Pattern;
 
 class JsonAsserter implements JsonVerifiable {
 
@@ -267,5 +265,19 @@ class JsonAsserter implements JsonVerifiable {
         return value instanceof String ?
                 "'" + stringWithEscapedSingleQuotes(value) + "'" :
                 value.toString();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T read(Class<T> clazz) {
+        Object readObject = parsedJson.read(jsonPath());
+        if (readObject instanceof JSONArray) {
+            JSONArray array = parsedJson.read(jsonPath());
+            if (array.size() == 1) {
+                return (T) array.get(0);
+            }
+            return (T) array;
+        }
+        return (T) readObject;
     }
 }

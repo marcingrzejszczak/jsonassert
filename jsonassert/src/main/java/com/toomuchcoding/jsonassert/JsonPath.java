@@ -20,4 +20,11 @@ public class JsonPath {
         return JsonAssertion.assertThat("").withoutThrowingException();
     }
 
+    /**
+     * Using a JSON Path builder for the given JSON you can read its value.
+     */
+    public static JsonVerifiable builder(String json) {
+        return JsonAssertion.assertThat(json).withoutThrowingException();
+    }
+
 }

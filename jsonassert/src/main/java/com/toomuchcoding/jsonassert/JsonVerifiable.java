@@ -7,7 +7,7 @@ package com.toomuchcoding.jsonassert;
  *
  * @since 0.1.0
  */
-public interface JsonVerifiable extends IteratingOverArray {
+public interface JsonVerifiable extends IteratingOverArray, JsonReader {
 
     /**
      * Assertion of a field inside an array. Use it only for assertion and not traversing

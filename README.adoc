@@ -1,4 +1,4 @@
-:lib_version: 0.3.0
+:lib_version: 0.4.0
 
 image::https://travis-ci.org/marcingrzejszczak/jsonassert.svg?branch=master[Build Status, link=https://travis-ci.org/marcingrzejszczak/jsonassert]
 image::https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding.jsonassert/jsonassert/badge.svg?style=plastic[Maven Central, link="https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding.jsonassert/jsonassert"]
@@ -79,13 +79,69 @@ JsonPath.builder().field("some").field("nested").array("withlist").contains("nam
 
 you will receive `$.some.nested.withlist[*][?(@.name == 'name1')]` String.
 
+=== Retrieving JSON Path value (since 0.4.0)
+
+Wouldn't it be great to retrieve the value from the JSON via the JSON Path? There you go!
+
+[source,groovy]
+----
+given:
+    String json = ''' [ {
+                            "some" : {
+                                "nested" : {
+                                    "json" : "with value",
+                                    "anothervalue": 4,
+                                    "withlist" : [
+                                        { "name" :"name1"} ,
+                                        {"name": "name2"},
+                                        {"anothernested": { "name": "name3"} }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "someother" : {
+                                "nested" : {
+                                    "json" : true,
+                                    "anothervalue": 4,
+                                    "withlist" : [
+                                        { "name" :"name1"} , {"name": "name2"}
+                                    ],
+                                    "withlist2" : [
+                                        "a", "b"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+'''
+    expect:
+        com.toomuchcoding.jsonassert.JsonPath.builder(json).array().field("some").field("nested").field("json").read(String) == 'with value'
+        com.toomuchcoding.jsonassert.JsonPath.builder(json).array().field("some").field("nested").field("anothervalue").read(Integer) == 4
+        assertThat(json).array().field("some").field("nested").array("withlist").field("name").read(List) == ['name1', 'name2']
+        assertThat(json).array().field("someother").field("nested").array("withlist2").read(List) == ['a', 'b']
+        assertThat(json).array().field("someother").field("nested").field("json").read(Boolean) == true
+----
+
+All thanks to the `JsonReader` interface:
+
+[source,java]
+----
+/**
+ * Returns the value from the JSON, based on the created JSON Path. If the result is an
+ * JSON Array and has a single value then that value is returned. If that's an array with
+ * greater number of results then that array is returned.
+ */
+<T> T read(Class<T> clazz);
+----
+
 == How to add it
 
 Just add it as your dependency (Example for Gradle)
 
 [source,groovy,subs="attributes,verbatim"]
 ----
-testCompile `com.toomuchcoding.jsonassert:jsonassert:{lib_version}`
+testCompile 'com.toomuchcoding.jsonassert:jsonassert:{lib_version}'
 ----
 
 == Dependencies

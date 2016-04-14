@@ -396,4 +396,46 @@ public class JsonAssertionSpec extends Specification {
             verifiable.jsonPath() == '''$[?(@.text == 'text with "quotes" inside')]'''
     }
 
+    def 'should resolve the value of JSON via JSON Path'() {
+        given:
+            String json =
+                    '''
+                            [ {
+                                    "some" : {
+                                        "nested" : {
+                                            "json" : "with value",
+                                            "anothervalue": 4,
+                                            "withlist" : [
+                                                { "name" :"name1"} ,
+                                                {"name": "name2"},
+                                                {"anothernested": { "name": "name3"} }
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "someother" : {
+                                        "nested" : {
+                                            "json" : true,
+                                            "anothervalue": 4,
+                                            "withlist" : [
+                                                { "name" :"name1"} , {"name": "name2"}
+                                            ],
+                                            "withlist2" : [
+                                                "a", "b"
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+        '''
+        expect:
+            com.toomuchcoding.jsonassert.JsonPath.builder(json).array().field("some").field("nested").field("json").read(String) == 'with value'
+            com.toomuchcoding.jsonassert.JsonPath.builder(json).array().field("some").field("nested").field("anothervalue").read(Integer) == 4
+            assertThat(json).array().field("some").field("nested").array("withlist").field("name").read(List) == ['name1', 'name2']
+            assertThat(json).array().field("someother").field("nested").array("withlist2").read(List) == ['a', 'b']
+            assertThat(json).array().field("someother").field("nested").field("json").read(Boolean) == true
+
+    }
+
 }

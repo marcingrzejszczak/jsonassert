@@ -1,6 +1,7 @@
 package com.toomuchcoding.jsonassert
 
 import spock.lang.Specification
+
 /**
  * @author Marcin Grzejszczak
  */
