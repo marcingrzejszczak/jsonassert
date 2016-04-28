@@ -317,7 +317,8 @@ public class JsonAssertionSpec extends Specification {
             assertThat(json).matchesJsonPath(jsonPath)
         then:
             IllegalStateException illegalStateException = thrown(IllegalStateException)
-            illegalStateException.message.contains("Parsed JSON doesn't match")
+            illegalStateException.message.contains("Parsed JSON")
+            illegalStateException.message.contains("doesn't match")
     }
 
     def "should not throw exception when json path is not matched and system prop overrides the check"() {

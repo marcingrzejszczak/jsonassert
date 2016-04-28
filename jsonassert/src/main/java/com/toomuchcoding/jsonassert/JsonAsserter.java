@@ -184,7 +184,7 @@ class JsonAsserter implements JsonVerifiable {
            throw new RuntimeException(e);
         }
         if (empty) {
-            throw new IllegalStateException("Parsed JSON doesn't match the JSON path [" + jsonPathString + "]");
+            throw new IllegalStateException("Parsed JSON [" + parsedJson.jsonString() + "] doesn't match the JSON path [" + jsonPathString + "]");
         }
     }
 
