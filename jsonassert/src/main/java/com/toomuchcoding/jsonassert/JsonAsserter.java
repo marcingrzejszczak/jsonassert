@@ -161,8 +161,10 @@ class JsonAsserter implements JsonVerifiable {
 
     @Override
     public JsonVerifiable value() {
-        return new ReadyToCheckAsserter(parsedJson,
+        ReadyToCheckAsserter readyToCheckAsserter = new ReadyToCheckAsserter(parsedJson,
                 jsonPathBuffer, fieldName, jsonAsserterConfiguration);
+        readyToCheckAsserter.checkBufferedJsonPathString();
+        return readyToCheckAsserter;
     }
 
     @Override

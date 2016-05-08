@@ -436,7 +436,17 @@ public class JsonAssertionSpec extends Specification {
             assertThat(json).array().field("some").field("nested").array("withlist").field("name").read(List) == ['name1', 'name2']
             assertThat(json).array().field("someother").field("nested").array("withlist2").read(List) == ['a', 'b']
             assertThat(json).array().field("someother").field("nested").field("json").read(Boolean) == true
+    }
 
+    def 'should assert json with only top list elements'() {
+        given:
+            String json = '''["Java", "Java8", "Spring", "SpringBoot", "Stream"]'''
+        expect:
+            assertThatJson(json).arrayField().contains("Java8").value()
+            assertThatJson(json).arrayField().contains("Spring").value()
+            assertThatJson(json).arrayField().contains("Java").value()
+            assertThatJson(json).arrayField().contains("Stream").value()
+            assertThatJson(json).arrayField().contains("SpringBoot").value()
     }
 
 }
