@@ -61,6 +61,12 @@ class JsonAsserter implements JsonVerifiable {
 
     @Override
     public ArrayValueAssertion arrayField() {
+        String peekedLast = jsonPathBuffer.peekLast();
+        // Issue #9
+        if(!"[*]".equals(peekedLast) && peekedLast.endsWith("[*]")) {
+            String last = jsonPathBuffer.pollLast();
+            jsonPathBuffer.offer(last.replace("[*]", ""));
+        }
         return new ArrayValueAssertion(parsedJson, jsonPathBuffer, jsonAsserterConfiguration);
     }
 
@@ -161,6 +167,9 @@ class JsonAsserter implements JsonVerifiable {
 
     @Override
     public JsonVerifiable value() {
+        if (isReadyToCheck()) {
+            return this;
+        }
         ReadyToCheckAsserter readyToCheckAsserter = new ReadyToCheckAsserter(parsedJson,
                 jsonPathBuffer, fieldName, jsonAsserterConfiguration);
         readyToCheckAsserter.checkBufferedJsonPathString();
@@ -211,6 +220,11 @@ class JsonAsserter implements JsonVerifiable {
     @Override
     public void matchesJsonPath(String jsonPath) {
         check(jsonPath);
+    }
+
+    @Override
+    public boolean isReadyToCheck() {
+        return false;
     }
 
     public boolean equals(Object o) {

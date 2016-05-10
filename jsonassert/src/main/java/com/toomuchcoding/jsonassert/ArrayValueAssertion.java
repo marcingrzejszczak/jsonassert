@@ -25,6 +25,7 @@ class ArrayValueAssertion extends FieldAssertion {
         ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
                 jsonPathBuffer, fieldName, jsonAsserterConfiguration);
         readyToCheck.jsonPathBuffer.offer("[?(@ == " + wrapValueWithSingleQuotes(value) + ")]");
+        readyToCheck.checkBufferedJsonPathString();
         return readyToCheck;
     }
 
@@ -33,6 +34,7 @@ class ArrayValueAssertion extends FieldAssertion {
         ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
                 jsonPathBuffer, fieldName, jsonAsserterConfiguration);
         readyToCheck.jsonPathBuffer.offer("[?(@ == " + String.valueOf(value) + ")]");
+        readyToCheck.checkBufferedJsonPathString();
         return readyToCheck;
     }
 
@@ -41,6 +43,7 @@ class ArrayValueAssertion extends FieldAssertion {
         ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
                 jsonPathBuffer, fieldName, jsonAsserterConfiguration);
         readyToCheck.jsonPathBuffer.offer("[?(@ =~ /" + stringWithEscapedSingleQuotesForRegex(value) + "/)]");
+        readyToCheck.checkBufferedJsonPathString();
         return readyToCheck;
     }
 
@@ -49,6 +52,7 @@ class ArrayValueAssertion extends FieldAssertion {
         ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
                 jsonPathBuffer, fieldName, jsonAsserterConfiguration);
         readyToCheck.jsonPathBuffer.offer("[?(@ == " + String.valueOf(value) + ")]");
+        readyToCheck.checkBufferedJsonPathString();
         return readyToCheck;
     }
 

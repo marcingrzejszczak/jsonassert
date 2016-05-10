@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 class FieldAssertion extends JsonAsserter {
     protected FieldAssertion(DocumentContext parsedJson, LinkedList<String> jsonPathBuffer,
-                             Object fieldName, JsonAsserterConfiguration jsonAsserterConfiguration) {
-        super(parsedJson, jsonPathBuffer, fieldName, jsonAsserterConfiguration);
+                             Object value, JsonAsserterConfiguration jsonAsserterConfiguration) {
+        super(parsedJson, jsonPathBuffer, value, jsonAsserterConfiguration);
     }
 }

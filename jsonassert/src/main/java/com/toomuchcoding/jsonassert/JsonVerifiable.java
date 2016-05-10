@@ -101,4 +101,11 @@ public interface JsonVerifiable extends IteratingOverArray, JsonReader {
      * Checks if the parsed document matches given JSON Path
      */
     void matchesJsonPath(String jsonPath);
+
+    /**
+     * Returns true if the assertion has been build and can be executed
+     */
+    boolean isReadyToCheck();
+
+
 }

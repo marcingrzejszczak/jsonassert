@@ -449,4 +449,20 @@ public class JsonAssertionSpec extends Specification {
             assertThatJson(json).arrayField().contains("SpringBoot").value()
     }
 
+    @Issue("#9")
+    def 'should match array containing an array of primitives'() {
+        given:
+            String json =  '''{"first_name":"existing",
+                                  "partners":[
+                                      { "role":"AGENT",
+                                        "payment_methods":[ "BANK", "CASH" ]
+                                      }
+                                   ]
+                                }'''
+
+        expect:
+            def verifiable = assertThatJson(json).array("partners").array("payment_methods").arrayField().isEqualTo("BANK").value()
+            '''$.partners[*].payment_methods[?(@ == 'BANK')]''' == verifiable.jsonPath()
+    }
+
 }
