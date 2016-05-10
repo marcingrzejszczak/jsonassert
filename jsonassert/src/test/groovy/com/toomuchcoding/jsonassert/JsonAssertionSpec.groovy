@@ -462,7 +462,17 @@ public class JsonAssertionSpec extends Specification {
 
         expect:
             def verifiable = assertThatJson(json).array("partners").array("payment_methods").arrayField().isEqualTo("BANK").value()
-            '''$.partners[*].payment_methods[?(@ == 'BANK')]''' == verifiable.jsonPath()
+            verifiable.jsonPath() == '''$.partners[*].payment_methods[?(@ == 'BANK')]'''
+    }
+
+    @Issue("#9")
+    def 'should match pattern in array'() {
+        given:
+            String json =  '''{ "authorities": ["ROLE_ADMIN"] }'''
+
+        expect:
+            def verifiable = assertThatJson(json).array("authorities").arrayField().matches("^[a-zA-Z0-9_\\- ]+\$").value()
+            verifiable.jsonPath() == '''$.authorities[?(@ =~ /^[a-zA-Z0-9_\\- ]+$/)]'''
     }
 
 }
