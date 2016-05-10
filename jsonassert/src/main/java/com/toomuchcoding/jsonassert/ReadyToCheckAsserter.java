@@ -10,9 +10,4 @@ class ReadyToCheckAsserter extends JsonAsserter {
                                 Object fieldName, JsonAsserterConfiguration jsonAsserterConfiguration) {
         super(parsedJson, jsonPathBuffer, fieldName, jsonAsserterConfiguration);
     }
-
-    @Override
-    public boolean isReadyToCheck() {
-        return true;
-    }
 }

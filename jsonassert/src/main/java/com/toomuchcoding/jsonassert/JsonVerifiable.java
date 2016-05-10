@@ -102,10 +102,4 @@ public interface JsonVerifiable extends IteratingOverArray, JsonReader {
      */
     void matchesJsonPath(String jsonPath);
 
-    /**
-     * Returns true if the assertion has been build and can be executed
-     */
-    boolean isReadyToCheck();
-
-
 }
