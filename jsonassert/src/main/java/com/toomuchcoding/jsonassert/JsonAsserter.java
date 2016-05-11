@@ -219,22 +219,21 @@ class JsonAsserter implements JsonVerifiable {
         check(jsonPath);
     }
 
+
+    @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!getClass().equals(o.getClass()))
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JsonAsserter that = (JsonAsserter) o;
+        if (jsonPathBuffer != null ? !jsonPathBuffer.equals(that.jsonPathBuffer) : that.jsonPathBuffer != null)
             return false;
-        JsonAsserter jsonPathAsserter = (JsonAsserter) o;
-        if (fieldName != null && !fieldName.equals(jsonPathAsserter.fieldName))
-            return false;
-        return jsonPathBuffer.equals(jsonPathAsserter.jsonPathBuffer);
+        return fieldName != null ? fieldName.equals(that.fieldName) : that.fieldName == null;
 
     }
 
+    @Override
     public int hashCode() {
-        int result;
-        result = (parsedJson != null ? parsedJson.hashCode() : 0);
-        result = 31 * result + (jsonPathBuffer != null ? jsonPathBuffer.hashCode() : 0);
+        int result = jsonPathBuffer != null ? jsonPathBuffer.hashCode() : 0;
         result = 31 * result + (fieldName != null ? fieldName.hashCode() : 0);
         return result;
     }
