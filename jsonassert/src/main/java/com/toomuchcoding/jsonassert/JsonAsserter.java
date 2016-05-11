@@ -225,7 +225,10 @@ class JsonAsserter implements JsonVerifiable {
         if (!getClass().equals(o.getClass()))
             return false;
         JsonAsserter jsonPathAsserter = (JsonAsserter) o;
-        if (!fieldName.equals(jsonPathAsserter.fieldName))
+        if (fieldName == null && jsonPathAsserter.fieldName == null) {
+            return true;
+        }
+        if (fieldName != null && !fieldName.equals(jsonPathAsserter.fieldName))
             return false;
         return jsonPathBuffer.equals(jsonPathAsserter.jsonPathBuffer);
 
