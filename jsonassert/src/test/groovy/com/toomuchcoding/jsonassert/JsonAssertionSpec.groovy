@@ -488,4 +488,14 @@ public class JsonAssertionSpec extends Specification {
             v2.jsonPath() == '''$.some_list[?(@ == 'name2')]'''
     }
 
+    def 'should parse an array of arrays that are root elements'() {
+        given:
+            String json =  '''[["Programming", "Java"], ["Programming", "Java", "Spring", "Boot"]]'''
+
+        expect:
+            def v1 = assertThatJson(JsonPath.parse(json)).array().arrayField().isEqualTo("Java").value()
+        and:
+            v1.jsonPath() == '''$[*][?(@ == 'Java')]'''
+    }
+
 }
