@@ -1,4 +1,4 @@
-:lib_version: 0.4.4
+:lib_version: 0.4.5
 
 image::https://travis-ci.org/marcingrzejszczak/jsonassert.svg?branch=master[Build Status, link=https://travis-ci.org/marcingrzejszczak/jsonassert]
 image::https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding.jsonassert/jsonassert/badge.svg?style=plastic[Maven Central, link="https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding.jsonassert/jsonassert"]
