@@ -475,4 +475,17 @@ public class JsonAssertionSpec extends Specification {
             verifiable.jsonPath() == '''$.authorities[?(@ =~ /^[a-zA-Z0-9_\\- ]+$/)]'''
     }
 
+    @Issue("#10")
+    def 'should manage to parse array with string values'() {
+        given:
+            String json =  '''{ "some_list" : ["name1", "name2"] }'''
+
+        expect:
+            def v1 = assertThat(JsonPath.parse(json)).array("some_list").arrayField().isEqualTo("name1")
+            def v2 = assertThat(JsonPath.parse(json)).array("some_list").arrayField().isEqualTo("name2")
+        and:
+            v1.jsonPath() == '''$.some_list[?(@ == 'name1')]'''
+            v2.jsonPath() == '''$.some_list[?(@ == 'name2')]'''
+    }
+
 }
