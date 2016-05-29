@@ -599,7 +599,7 @@ public class JsonAssertionSpec extends Specification {
         then:
             def ex = thrown(RuntimeException)
             ex instanceof IllegalStateException
-            ex.message == '''Parsed JSON <[["Programming","Java"],["Programming","Java","Spring","Boot"]]> doesn't have the size <4> for JSON path <$[*]>. The size is <2>'''
+            ex.message == '''Parsed JSON <[["Programming","Java"],["Programming","Java","Spring","Boot"],["Programming","Java","Spring","Boot","Master"]]> doesn't have the size <4> for JSON path <$[*]>. The size is <3>'''
     }
 
     @Issue('#11')
