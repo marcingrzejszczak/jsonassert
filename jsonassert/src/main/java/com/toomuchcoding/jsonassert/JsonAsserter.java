@@ -1,12 +1,14 @@
 package com.toomuchcoding.jsonassert;
 
-import com.jayway.jsonpath.DocumentContext;
-import net.minidev.json.JSONArray;
+import java.util.LinkedList;
+import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedList;
-import java.util.regex.Pattern;
+import com.jayway.jsonpath.DocumentContext;
+
+import net.minidev.json.JSONArray;
 
 class JsonAsserter implements JsonVerifiable {
 
@@ -179,25 +181,29 @@ class JsonAsserter implements JsonVerifiable {
         return this;
     }
 
-    private void check(String jsonPathString) {
+    private JSONArray check(String jsonPathString) {
         if (jsonAsserterConfiguration.ignoreJsonPathException) {
             log.trace("WARNING!!! Overriding verification of the JSON Path. Your tests may pass even though they shouldn't");
-            return;
+            return null;
         }
-        boolean empty;
+        JSONArray array = parseJsonPathAsArray(jsonPathString);
+        if (array.isEmpty()) {
+            throw new IllegalStateException("Parsed JSON [" + parsedJson.jsonString() + "] doesn't match the JSON path [" + jsonPathString + "]");
+        }
+        return array;
+    }
+
+    private JSONArray parseJsonPathAsArray(String jsonPathString) {
         try {
-            empty = parsedJson.read(jsonPathString, JSONArray.class).isEmpty();
+            return parsedJson.read(jsonPathString, JSONArray.class);
         } catch (Exception e) {
            log.error("Exception occurred while trying to match JSON Path [{}]", jsonPathString, e);
            throw new RuntimeException(e);
         }
-        if (empty) {
-            throw new IllegalStateException("Parsed JSON [" + parsedJson.jsonString() + "] doesn't match the JSON path [" + jsonPathString + "]");
-        }
     }
 
-    protected void checkBufferedJsonPathString() {
-        check(createJsonPathString());
+    JSONArray checkBufferedJsonPathString() {
+        return check(createJsonPathString());
     }
 
     private String createJsonPathString() {
@@ -219,6 +225,15 @@ class JsonAsserter implements JsonVerifiable {
         check(jsonPath);
     }
 
+    @Override
+    public JsonVerifiable hasSize(int size) {
+        JSONArray array = checkBufferedJsonPathString();
+        if (array.size() != size) {
+            throw new IllegalStateException("Parsed JSON [" + parsedJson.jsonString() + "] doesn't have the "
+                    + "size [" + size + "] for JSON path [" + createJsonPathString()+ "]. The size is [" + array.size() + "]");
+        }
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {

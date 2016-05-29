@@ -460,7 +460,6 @@ public class JsonAssertionSpec extends Specification {
                                       }
                                    ]
                                 }'''
-
         expect:
             def verifiable = assertThatJson(json).array("partners").array("payment_methods").arrayField().isEqualTo("BANK").value()
             verifiable.jsonPath() == '''$.partners[*].payment_methods[?(@ == 'BANK')]'''
@@ -470,7 +469,6 @@ public class JsonAssertionSpec extends Specification {
     def 'should match pattern in array'() {
         given:
             String json =  '''{ "authorities": ["ROLE_ADMIN"] }'''
-
         expect:
             def verifiable = assertThatJson(json).array("authorities").arrayField().matches("^[a-zA-Z0-9_\\- ]+\$").value()
             verifiable.jsonPath() == '''$.authorities[?(@ =~ /^[a-zA-Z0-9_\\- ]+$/)]'''
@@ -480,7 +478,6 @@ public class JsonAssertionSpec extends Specification {
     def 'should manage to parse array with string values'() {
         given:
             String json =  '''{ "some_list" : ["name1", "name2"] }'''
-
         expect:
             def v1 = assertThat(JsonPath.parse(json)).array("some_list").arrayField().isEqualTo("name1")
             def v2 = assertThat(JsonPath.parse(json)).array("some_list").arrayField().isEqualTo("name2")
@@ -492,11 +489,24 @@ public class JsonAssertionSpec extends Specification {
     def 'should parse an array of arrays that are root elements'() {
         given:
             String json =  '''[["Programming", "Java"], ["Programming", "Java", "Spring", "Boot"]]'''
-
         expect:
             def v1 = assertThatJson(JsonPath.parse(json)).array().arrayField().isEqualTo("Java").value()
         and:
             v1.jsonPath() == '''$[*][?(@ == 'Java')]'''
+    }
+
+    @Issue('#11')
+    def 'should allow to check array size'() {
+        given:
+            String json =  '''{ "some_list" : ["name1", "name2"] }'''
+        expect:
+            assertThat(json).array("some_list").hasSize(2)
+        when:
+            assertThat(json).array("some_list").hasSize(5)
+        then:
+            def ex = thrown(RuntimeException)
+            ex instanceof IllegalStateException
+            ex.message == '''Parsed JSON [{"some_list":["name1","name2"]}] doesn't have the size [5] for JSON path [$.some_list[*]]. The size is [2]'''
     }
 
     @Unroll

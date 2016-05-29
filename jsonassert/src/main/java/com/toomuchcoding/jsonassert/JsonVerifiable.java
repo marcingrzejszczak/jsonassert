@@ -102,4 +102,15 @@ public interface JsonVerifiable extends IteratingOverArray, JsonReader {
      */
     void matchesJsonPath(String jsonPath);
 
+    /**
+     * Checks if the array is of a given size. Example of usage:
+     *
+     * <pre>{@code
+     * String json =  '''{ "some_list" : ["name1", "name2"] }'''
+     * assertThat(json).array("some_list").hasSize(2)
+     * }</pre>
+     *
+     */
+    JsonVerifiable hasSize(int size);
+
 }
