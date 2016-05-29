@@ -80,6 +80,13 @@ class JsonAsserter implements JsonVerifiable {
     }
 
     @Override
+    public JsonVerifiable elementWithIndex(int index) {
+        ArrayAssertion asserter = new ArrayAssertion(parsedJson, jsonPathBuffer, jsonAsserterConfiguration);
+        asserter.jsonPathBuffer.offer("[" + index + "]");
+        return asserter;
+    }
+
+    @Override
     public JsonVerifiable isEqualTo(String value) {
         if (value == null) {
             return isNull();
@@ -183,7 +190,7 @@ class JsonAsserter implements JsonVerifiable {
 
     private JSONArray check(String jsonPathString) {
         if (jsonAsserterConfiguration.ignoreJsonPathException) {
-            log.trace("WARNING!!! Overriding verification of the JSON Path. Your tests may pass even though they shouldn't");
+            logOverridingWarning();
             return null;
         }
         JSONArray array = parseJsonPathAsArray(jsonPathString);
@@ -227,12 +234,20 @@ class JsonAsserter implements JsonVerifiable {
 
     @Override
     public JsonVerifiable hasSize(int size) {
+        if (jsonAsserterConfiguration.ignoreJsonPathException) {
+            logOverridingWarning();
+            return this;
+        }
         JSONArray array = checkBufferedJsonPathString();
-        if (array.size() != size) {
-            throw new IllegalStateException("Parsed JSON [" + parsedJson.jsonString() + "] doesn't have the "
-                    + "size [" + size + "] for JSON path [" + createJsonPathString()+ "]. The size is [" + array.size() + "]");
+        if (array == null || array.size() != size) {
+            throw new IllegalStateException("Parsed JSON <" + parsedJson.jsonString() + "> doesn't have the "
+                    + "size <" + size + "> for JSON path <" + createJsonPathString()+ ">. The size is <" + (array == null ? null : array.size()) + ">");
         }
         return this;
+    }
+
+    private void logOverridingWarning() {
+        log.trace("WARNING!!! Overriding verification of the JSON Path. Your tests may pass even though they shouldn't");
     }
 
     @Override

@@ -506,7 +506,133 @@ public class JsonAssertionSpec extends Specification {
         then:
             def ex = thrown(RuntimeException)
             ex instanceof IllegalStateException
-            ex.message == '''Parsed JSON [{"some_list":["name1","name2"]}] doesn't have the size [5] for JSON path [$.some_list[*]]. The size is [2]'''
+            ex.message == '''Parsed JSON <{"some_list":["name1","name2"]}> doesn't have the size <5> for JSON path <$.some_list[*]>. The size is <2>'''
+    }
+
+    @Issue('#11')
+    def 'should allow to check size of root array'() {
+        given:
+            String json =  '''["name1", "name2"]'''
+        expect:
+            assertThat(json).hasSize(2)
+        when:
+           assertThat(json).hasSize(5)
+        then:
+            def ex = thrown(RuntimeException)
+            ex instanceof IllegalStateException
+            ex.message == '''Parsed JSON <["name1","name2"]> doesn't have the size <5> for JSON path <$>. The size is <2>'''
+    }
+
+    @Issue('#11')
+    def 'should allow to check size of a nested array'() {
+        given:
+        String json =
+                '''
+                            [ {
+                                    "some" : {
+                                        "nested" : {
+                                            "json" : "with value",
+                                            "anothervalue": 4,
+                                            "withlist" : [
+                                                { "name" :"name1"} ,
+                                                {"name": "name2"},
+                                                {"anothernested": { "name": "name3"} }
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "someother" : {
+                                        "nested" : {
+                                            "json" : true,
+                                            "anothervalue": 4,
+                                            "withlist" : [
+                                                { "name" :"name1"} , {"name": "name2"}
+                                            ],
+                                            "withlist2" : [
+                                                "a", "b"
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]'''
+        expect:
+            assertThat(json).array().field("someother").field("nested").array("withlist2").hasSize(2)
+        when:
+            assertThat(json).array().field("someother").field("nested").array("withlist2").hasSize(5)
+        then:
+            def ex = thrown(RuntimeException)
+            ex instanceof IllegalStateException
+            ex.message == '''Parsed JSON <[{"some":{"nested":{"json":"with value","anothervalue":4,"withlist":[{"name":"name1"},{"name":"name2"},{"anothernested":{"name":"name3"}}]}}},{"someother":{"nested":{"json":true,"anothervalue":4,"withlist":[{"name":"name1"},{"name":"name2"}],"withlist2":["a","b"]}}}]> doesn't have the size <5> for JSON path <$[*].someother.nested.withlist2[*]>. The size is <2>'''
+    }
+
+    @Issue('#11')
+    def 'should allow to check size of a named array'() {
+        given:
+        def json = [
+                property1: 'a',
+                property2: [
+                [a: 'sth'],
+                [b: 'sthElse']
+            ]
+        ]
+        expect:
+            assertThat(toJson(json)).array("property2").hasSize(2)
+        when:
+            assertThat(toJson(json)).array("property2").hasSize(5)
+        then:
+            def ex = thrown(RuntimeException)
+            ex instanceof IllegalStateException
+            ex.message == '''Parsed JSON <{"property1":"a","property2":[{"a":"sth"},{"b":"sthElse"}]}> doesn't have the size <5> for JSON path <$.property2[*]>. The size is <2>'''
+    }
+
+    @Issue('#11')
+    def 'should allow to check size of two nameless arrays'() {
+        given:
+            String json =  '''[["Programming", "Java"], ["Programming", "Java", "Spring", "Boot"], ["Programming", "Java", "Spring", "Boot", "Master"]]'''
+        expect:
+            assertThat(json).hasSize(3)
+            assertThat(json).elementWithIndex(0).hasSize(2)
+            assertThat(json).elementWithIndex(1).hasSize(4)
+        when:
+           assertThat(json).array().hasSize(4)
+        then:
+            def ex = thrown(RuntimeException)
+            ex instanceof IllegalStateException
+            ex.message == '''Parsed JSON <[["Programming","Java"],["Programming","Java","Spring","Boot"]]> doesn't have the size <4> for JSON path <$[*]>. The size is <2>'''
+    }
+
+    @Issue('#11')
+    def 'should allow to check size of two nameless arrays in a nameless array'() {
+        given:
+            String json =  '''[[["Programming", "Java"], ["Programming", "Java", "Spring", "Boot"]]]'''
+        expect:
+            assertThat(json).hasSize(1)
+            assertThat(json).elementWithIndex(0).elementWithIndex(0).hasSize(2)
+            assertThat(json).elementWithIndex(0).elementWithIndex(1).hasSize(4)
+        when:
+           assertThat(json).elementWithIndex(0).elementWithIndex(1).hasSize(5)
+        then:
+            def ex = thrown(RuntimeException)
+            ex instanceof IllegalStateException
+            ex.message == '''Parsed JSON <[[["Programming","Java"],["Programming","Java","Spring","Boot"]]]> doesn't have the size <5> for JSON path <$[0][1]>. The size is <4>'''
+    }
+
+    @Issue('#11')
+    def 'should allow to check array size of nameless array'() {
+        given:
+            String json =  '''{ "coordinates" : [[
+                                            ["name1", "name2"],
+                                            ["name3", "name4"]
+                                        ]] }'''
+        expect:
+            assertThat(json).array("coordinates").array().hasSize(2)
+        when:
+            assertThat(json).array("coordinates").array().hasSize(5)
+        then:
+            def ex = thrown(RuntimeException)
+            ex instanceof IllegalStateException
+            ex.message == '''Parsed JSON <{"coordinates":[[["name1","name2"],["name3","name4"]]]}> doesn't have the size <5> for JSON path <$.coordinates[*][*]>. The size is <2>'''
     }
 
     @Unroll

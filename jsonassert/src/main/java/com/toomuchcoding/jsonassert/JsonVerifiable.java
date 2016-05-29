@@ -41,6 +41,11 @@ public interface JsonVerifiable extends IteratingOverArray, JsonReader {
     JsonVerifiable array();
 
     /**
+     * Provides the {@link JsonVerifiable} for the {@code index} element of the array
+     */
+    JsonVerifiable elementWithIndex(int index);
+
+    /**
      * 0Equality comparison with String
      *
      * @throws IllegalStateException - if JSON Path is not matched for the parsed JSON

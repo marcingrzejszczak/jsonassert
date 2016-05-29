@@ -28,10 +28,13 @@ scmVersion {
     }
 }
 
+allprojects {
+    project.version = scmVersion.version
+}
+
 subprojects {
 
     group = 'com.toomuchcoding.jsonassert'
-    project.version = scmVersion.version
     description = "JSON assertion library"
 
     repositories {
