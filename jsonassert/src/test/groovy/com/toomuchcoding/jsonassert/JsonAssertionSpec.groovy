@@ -2,6 +2,7 @@ package com.toomuchcoding.jsonassert
 
 import com.jayway.jsonpath.DocumentContext
 import com.jayway.jsonpath.JsonPath
+import com.jayway.jsonpath.PathNotFoundException
 import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
@@ -496,6 +497,17 @@ public class JsonAssertionSpec extends Specification {
             def v1 = assertThatJson(JsonPath.parse(json)).array().arrayField().isEqualTo("Java").value()
         and:
             v1.jsonPath() == '''$[*][?(@ == 'Java')]'''
+    }
+
+    @Unroll
+    def 'should fail on non existent path'() {
+        when:
+            assertThat(json instanceof Map ? toJson(json) : json).field("non").field("existant").field("field").isEqualTo("imaginary value")
+        then:
+            def ex = thrown(RuntimeException)
+            ex.cause instanceof PathNotFoundException
+        where:
+            json << [ json1, json2, json3, json4, json5, json6, json7, json8, json9, json10, json11 ]
     }
 
 }
