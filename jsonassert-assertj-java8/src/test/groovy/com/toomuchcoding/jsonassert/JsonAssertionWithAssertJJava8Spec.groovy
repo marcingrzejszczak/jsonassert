@@ -1,6 +1,7 @@
 package com.toomuchcoding.jsonassert
 
 import com.jayway.jsonpath.JsonPath
+import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -248,6 +249,19 @@ class JsonAssertionWithAssertJJava8Spec extends Specification {
         ]
         expect:
         assertThat(JsonPath.parse(toJson(json))).field("property2").matches('[0-9]{2}')
+    }
+
+    @Issue('#14')
+    def 'should allow to check if size is empty'() {
+        given:
+            String json =  '''{ "coordinates" : [], "foo": ["bar", "baz"] }'''
+        expect:
+            assertThat(JsonPath.parse(json)).array("coordinates").isEmpty()
+        when:
+            assertThat(JsonPath.parse(json)).array("foo").isEmpty()
+        then:
+            AssertionError assertionError = thrown(AssertionError)
+            assertionError.message == '''Expected JSON to with JSON Path <$.foo[*]> to be empty'''
     }
 
 

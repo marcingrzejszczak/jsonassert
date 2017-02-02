@@ -174,6 +174,15 @@ class JsonAsserter implements JsonVerifiable {
         return readyToCheck;
     }
 
+    @Override public JsonVerifiable isEmpty() throws IllegalStateException {
+        String jsonPathString = createJsonPathString();
+        JSONArray array = jsonPathToArray(jsonPathString);
+        if (!(array.size() == 0)) {
+            throw new IllegalStateException("Parsed JSON [" + parsedJson.jsonString() + "] with the JSON path [" + jsonPathString + "] is not empty!");
+        }
+        return this;
+    }
+
     @Override
     public JsonVerifiable value() {
         ReadyToCheckAsserter readyToCheckAsserter = new ReadyToCheckAsserter(parsedJson,
@@ -193,11 +202,15 @@ class JsonAsserter implements JsonVerifiable {
             logOverridingWarning();
             return null;
         }
-        JSONArray array = parseJsonPathAsArray(jsonPathString);
+        JSONArray array = jsonPathToArray(jsonPathString);
         if (array.isEmpty()) {
             throw new IllegalStateException("Parsed JSON [" + parsedJson.jsonString() + "] doesn't match the JSON path [" + jsonPathString + "]");
         }
         return array;
+    }
+
+    private JSONArray jsonPathToArray(String jsonPathString) {
+        return parseJsonPathAsArray(jsonPathString);
     }
 
     private JSONArray parseJsonPathAsArray(String jsonPathString) {

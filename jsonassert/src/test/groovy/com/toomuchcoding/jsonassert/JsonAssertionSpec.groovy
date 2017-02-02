@@ -11,10 +11,11 @@ import spock.lang.Unroll
 import static JsonAssertion.assertThat
 import static JsonAssertion.assertThatJson
 import static groovy.json.JsonOutput.toJson
+
 /**
  * @author Marcin Grzejszczak
  */
-public class JsonAssertionSpec extends Specification {
+class JsonAssertionSpec extends Specification {
 
     @Shared String json1 = '''
                          {
@@ -644,6 +645,20 @@ public class JsonAssertionSpec extends Specification {
             ex.cause instanceof PathNotFoundException
         where:
             json << [ json1, json2, json3, json4, json5, json6, json7, json8, json9, json10, json11 ]
+    }
+
+    @Issue('#14')
+    def 'should allow to check if size is empty'() {
+        given:
+            String json =  '''{ "coordinates" : [], "foo": ["bar", "baz"] }'''
+        expect:
+            assertThat(json).array("coordinates").isEmpty()
+        when:
+            assertThat(json).array("foo").isEmpty()
+        then:
+            def ex = thrown(RuntimeException)
+            ex instanceof IllegalStateException
+            ex.message == '''Parsed JSON [{"coordinates":[],"foo":["bar","baz"]}] with the JSON path [$.foo[*]] is not empty!'''
     }
 
 }

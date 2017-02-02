@@ -171,4 +171,17 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
         return this;
     }
 
+    /**
+     * @see JsonVerifiable#isEmpty()
+     */
+    public JsonPathAssert isEmpty() {
+        isNotNull();
+        try {
+            actual.isEmpty();
+        } catch (IllegalStateException e) {
+            failWithMessage("Expected JSON to with JSON Path <%s> to be empty", actual.jsonPath());
+        }
+        return this;
+    }
+
 }

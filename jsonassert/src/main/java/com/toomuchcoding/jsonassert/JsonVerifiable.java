@@ -88,6 +88,13 @@ public interface JsonVerifiable extends IteratingOverArray, JsonReader {
     JsonVerifiable isEqualTo(Boolean value) throws IllegalStateException;
 
     /**
+     * Checks if the array is empty
+     *
+     * @throws IllegalStateException - if JSON Path is not matched for the parsed JSON
+     */
+    JsonVerifiable isEmpty() throws IllegalStateException;
+
+    /**
      * Syntactic sugar for checking against an array of primitives
      */
     JsonVerifiable value();
