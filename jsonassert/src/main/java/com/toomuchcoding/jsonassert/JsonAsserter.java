@@ -1,14 +1,15 @@
 package com.toomuchcoding.jsonassert;
 
+import com.jayway.jsonpath.DocumentContext;
+import net.minidev.json.JSONArray;
+
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.jayway.jsonpath.DocumentContext;
-
-import net.minidev.json.JSONArray;
 
 class JsonAsserter implements JsonVerifiable {
 
@@ -203,10 +204,26 @@ class JsonAsserter implements JsonVerifiable {
             return null;
         }
         JSONArray array = jsonPathToArray(jsonPathString);
-        if (array.isEmpty()) {
+        if (array.isEmpty() || containsEmptyElementsOnly(array)) {
             throw new IllegalStateException("Parsed JSON [" + parsedJson.jsonString() + "] doesn't match the JSON path [" + jsonPathString + "]");
         }
         return array;
+    }
+
+    private boolean containsEmptyElementsOnly(JSONArray array) {
+        boolean empty = true;
+        for (Object o : array) {
+            if (o instanceof Map) {
+                empty = empty && ((Map) o).isEmpty();
+            } else if (o instanceof List) {
+                empty = empty && ((List) o).isEmpty();
+            } else if (o instanceof JSONArray) {
+                empty = empty && containsEmptyElementsOnly((JSONArray) o);
+            } else {
+                empty = false;
+            }
+        }
+        return empty;
     }
 
     private JSONArray jsonPathToArray(String jsonPathString) {

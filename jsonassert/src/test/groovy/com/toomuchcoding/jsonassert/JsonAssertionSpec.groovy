@@ -661,4 +661,22 @@ class JsonAssertionSpec extends Specification {
             ex.message == '''Parsed JSON [{"coordinates":[],"foo":["bar","baz"]}] with the JSON path [$.foo[*]] is not empty!'''
     }
 
+    @Issue('#16')
+    def 'should throw exception when an empty array is returned'() {
+        given:
+            String json =  '''{}'''
+        when:
+            assertThatJson(json).field("doesNotExist").matches("[\\p{L}]*")
+        then:
+            def ex = thrown(RuntimeException)
+            ex instanceof IllegalStateException
+            ex.message == '''Parsed JSON [{}] doesn't match the JSON path [$[?(@.doesNotExist =~ /[\\p{L}]*/)]]'''
+        when:
+            assertThatJson(json).array("c").matches("[\\p{L}]*")
+        then:
+            ex = thrown(RuntimeException)
+            ex instanceof IllegalStateException
+            ex.message == '''Parsed JSON [{}] doesn't match the JSON path [$[?(@.c =~ /[\\p{L}]*/)]]'''
+    }
+
 }
