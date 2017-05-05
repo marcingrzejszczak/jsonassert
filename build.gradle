@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "pl.allegro.tech.build:axion-release-plugin:1.3.4"
+        classpath "pl.allegro.tech.build:axion-release-plugin:1.6.0"
         classpath "com.bmuschko:gradle-nexus-plugin:2.3"
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.8.0"
     }
