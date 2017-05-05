@@ -219,7 +219,7 @@ class JsonAsserter implements JsonVerifiable {
                 empty = empty && ((List) o).isEmpty();
             } else if (o instanceof JSONArray) {
                 empty = empty && containsEmptyElementsOnly((JSONArray) o);
-            } else {
+            } else if (o != null){
                 empty = false;
             }
         }
