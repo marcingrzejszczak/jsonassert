@@ -661,6 +661,16 @@ class JsonAssertionSpec extends Specification {
             ex.message == '''Parsed JSON [{"coordinates":[],"foo":["bar","baz"]}] with the JSON path [$.foo[*]] is not empty!'''
     }
 
+    @Issue('#17')
+    def 'should ignore exception on empty check'() {
+        given:
+            String json =  '''{ "coordinates" : [], "foo": ["bar", "baz"] }'''
+        when:
+            assertThat(json).withoutThrowingException().array("foo").isEmpty()
+        then:
+            noExceptionThrown()
+    }
+
     @Issue('#16')
     def 'should throw exception when an empty array is returned'() {
         given:

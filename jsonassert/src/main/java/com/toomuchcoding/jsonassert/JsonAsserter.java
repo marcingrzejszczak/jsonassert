@@ -176,6 +176,10 @@ class JsonAsserter implements JsonVerifiable {
     }
 
     @Override public JsonVerifiable isEmpty() throws IllegalStateException {
+        if (jsonAsserterConfiguration.ignoreJsonPathException) {
+            logOverridingWarning();
+            return this;
+        }
         String jsonPathString = createJsonPathString();
         JSONArray array = jsonPathToArray(jsonPathString);
         if (!(array.size() == 0)) {
