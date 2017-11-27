@@ -101,6 +101,17 @@ class JsonAsserter implements JsonVerifiable {
         return readyToCheck;
     }
 
+    @Override
+    public JsonVerifiable isInstanceOf(Class clazz) {
+        ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
+                jsonPathBuffer, fieldName, jsonAsserterConfiguration);
+        Object object = readyToCheck.read(Object.class);
+        if (clazz.isAssignableFrom(object.getClass())) {
+            return readyToCheck;
+        }
+        throw new IllegalStateException("For JSON path [" + readyToCheck.jsonPath() + "] instance of [" + object.getClass().getSimpleName() + "] is not assignable from [" + clazz.getSimpleName() + "]");
+    }
+
     private void updateCurrentBuffer(JsonAsserter readyToCheck) {
         jsonPathBuffer.clear();
         jsonPathBuffer.addAll(readyToCheck.jsonPathBuffer);

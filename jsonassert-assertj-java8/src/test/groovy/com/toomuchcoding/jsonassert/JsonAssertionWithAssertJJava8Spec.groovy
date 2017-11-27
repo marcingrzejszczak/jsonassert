@@ -264,5 +264,20 @@ class JsonAssertionWithAssertJJava8Spec extends Specification {
             assertionError.message == '''Expected JSON to with JSON Path <$.foo[*]> to be empty'''
     }
 
+    @Issue('#18')
+    def 'should read types of objects'() {
+        given:
+            String json =  '''{ "foo" : 46 }'''
+        when:
+            assertThat(JsonPath.parse(json)).field("foo").isInstanceOf(Number)
+        then:
+            noExceptionThrown()
+        when:
+            assertThat(JsonPath.parse(json)).field("foo").isInstanceOf(String)
+        then:
+            AssertionError assertionError = thrown(AssertionError)
+            assertionError.message == '''For JSON path [$.foo] instance of [Integer] is not assignable from [String]'''
+    }
+
 
 }

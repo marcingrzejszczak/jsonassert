@@ -689,4 +689,20 @@ class JsonAssertionSpec extends Specification {
             ex.message == '''Parsed JSON [{}] doesn't match the JSON path [$[?(@.c =~ /[\\p{L}]*/)]]'''
     }
 
+    @Issue('#18')
+    def 'should read types of objects'() {
+        given:
+            String json =  '''{ "foo": 46 }'''
+        when:
+            assertThatJson(json).field("foo").isInstanceOf(Number)
+        then:
+            noExceptionThrown()
+        when:
+            assertThatJson(json).field("foo").isInstanceOf(String)
+        then:
+            RuntimeException ex = thrown(RuntimeException)
+            ex instanceof IllegalStateException
+            ex.message == '''For JSON path [$.foo] instance of [Integer] is not assignable from [String]'''
+    }
+
 }
