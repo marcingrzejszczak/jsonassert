@@ -95,6 +95,13 @@ public interface JsonVerifiable extends IteratingOverArray, JsonReader {
     JsonVerifiable isEmpty() throws IllegalStateException;
 
     /**
+     * Checks if instance is the same type
+     *
+     * @throws IllegalStateException - if the object from JSON is not of proper type
+     */
+    JsonVerifiable isInstanceOf(Class clazz) throws IllegalStateException;
+
+    /**
      * Syntactic sugar for checking against an array of primitives
      */
     JsonVerifiable value();

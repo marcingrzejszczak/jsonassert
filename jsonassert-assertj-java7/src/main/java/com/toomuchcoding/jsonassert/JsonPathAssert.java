@@ -104,6 +104,20 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, JsonVerifiabl
     }
 
     /**
+     * @see JsonVerifiable#isInstanceOf(Class)
+     */
+    public JsonPathAssert isInstanceOf(Class clazz) {
+        isNotNull();
+        JsonVerifiable jsonVerifiable = null;
+        try {
+            jsonVerifiable = actual.isInstanceOf(clazz);
+        } catch (IllegalStateException e) {
+            failWithMessage(e.getMessage());
+        }
+        return new JsonPathAssert(jsonVerifiable);
+    }
+
+    /**
      * @see JsonVerifiable#matches(String)
      */
     public JsonPathAssert matches(String value) {
