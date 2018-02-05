@@ -3,6 +3,7 @@ package com.toomuchcoding.jsonassert;
 import com.jayway.jsonpath.DocumentContext;
 import net.minidev.json.JSONArray;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -140,10 +141,14 @@ class JsonAsserter implements JsonVerifiable {
         ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
                 jsonPathBuffer, fieldName, jsonAsserterConfiguration);
         readyToCheck.jsonPathBuffer.removeLast();
-        readyToCheck.jsonPathBuffer.offer("[?(@." + String.valueOf(fieldName) + " == " + value + ")]");
+        readyToCheck.jsonPathBuffer.offer("[?(@." + String.valueOf(fieldName) + " == " + numberValue(value) + ")]");
         updateCurrentBuffer(readyToCheck);
         readyToCheck.checkBufferedJsonPathString();
         return readyToCheck;
+    }
+
+    String numberValue(Number number) {
+        return new BigDecimal(number.toString()).toString();
     }
 
     @Override

@@ -33,7 +33,7 @@ class ArrayValueAssertion extends FieldAssertion {
     public JsonVerifiable isEqualTo(Number value) {
         ReadyToCheckAsserter readyToCheck = new ReadyToCheckAsserter(parsedJson,
                 jsonPathBuffer, fieldName, jsonAsserterConfiguration);
-        readyToCheck.jsonPathBuffer.offer("[?(@ == " + String.valueOf(value) + ")]");
+        readyToCheck.jsonPathBuffer.offer("[?(@ == " + numberValue(value) + ")]");
         readyToCheck.checkBufferedJsonPathString();
         return readyToCheck;
     }

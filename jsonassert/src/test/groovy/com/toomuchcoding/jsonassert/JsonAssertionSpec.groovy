@@ -705,4 +705,22 @@ class JsonAssertionSpec extends Specification {
             ex.message == '''For JSON path [$.foo] instance of [Integer] is not assignable from [String]'''
     }
 
+    @Issue('#18')
+    def 'should read big numbers'() {
+        given:
+            String json =  '''{ "largeNum": 55534673.56, "bigInt": 2147483647, "decimals": 0.1287361923123}'''
+        when:
+            assertThatJson(json).field("largeNum").isEqualTo(55534673.56 as Double)
+        then:
+            noExceptionThrown()
+        when:
+            assertThatJson(json).field("bigInt").isEqualTo(Integer.MAX_VALUE as Integer)
+        then:
+            noExceptionThrown()
+        when:
+            assertThatJson(json).field("decimals").isEqualTo(0.1287361923123 as Double)
+        then:
+            noExceptionThrown()
+    }
+
 }
