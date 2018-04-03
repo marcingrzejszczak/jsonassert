@@ -222,16 +222,39 @@ class JsonAssertionSpec extends Specification {
                         '''
 
     @Unroll
-    def "should manage to parse a double array"() {
+    def "should manage to parse a triple array"() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
         where:
             verifiable                                                                                                                           || expectedJsonPath
-            assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(38.995548).value()  || '''$[*].place.bounding_box.coordinates[*][*][?(@ == 38.995548)]'''
-            assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(-77.119759).value() || '''$[*].place.bounding_box.coordinates[*][*][?(@ == -77.119759)]'''
-            assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(-76.909393).value() || '''$[*].place.bounding_box.coordinates[*][*][?(@ == -76.909393)]'''
-            assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(38.791645).value()  || '''$[*].place.bounding_box.coordinates[*][*][?(@ == 38.791645)]'''
+            assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().array().arrayField().contains(38.995548).value()  || '''$[*].place.bounding_box.coordinates[*][*][?(@ == 38.995548)]'''
+            assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().array().arrayField().contains(-77.119759).value() || '''$[*].place.bounding_box.coordinates[*][*][?(@ == -77.119759)]'''
+            assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().array().arrayField().contains(-76.909393).value() || '''$[*].place.bounding_box.coordinates[*][*][?(@ == -76.909393)]'''
+            assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().array().arrayField().contains(38.791645).value()  || '''$[*].place.bounding_box.coordinates[*][*][?(@ == 38.791645)]'''
 
+    }
+
+    @Shared String jsonArrayInArray= '''
+                        {
+                            "coordinates":
+                                [
+                                    [-77.119759,38.995548],
+                                    [-76.909393,38.791645]
+                                ]
+                            }
+                        }
+                    '''
+
+    @Unroll
+    def "should manage to parse array in array"() {
+        expect:
+            verifiable.jsonPath() == expectedJsonPath
+        where:
+            verifiable                                                                                                || expectedJsonPath
+            assertThat(jsonArrayInArray).array("coordinates").array().arrayField().contains(38.995548).value()  || '''$.coordinates[*][?(@ == 38.995548)]'''
+            assertThat(jsonArrayInArray).array("coordinates").array().arrayField().contains(-77.119759).value() || '''$.coordinates[*][?(@ == -77.119759)]'''
+            assertThat(jsonArrayInArray).array("coordinates").array().arrayField().contains(-76.909393).value() || '''$.coordinates[*][?(@ == -76.909393)]'''
+            assertThat(jsonArrayInArray).array("coordinates").array().arrayField().contains(38.791645).value()  || '''$.coordinates[*][?(@ == 38.791645)]'''
     }
 
     @Unroll

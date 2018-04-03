@@ -121,12 +121,12 @@ class JsonAssertionWithAssertJJava7Spec extends Specification {
                         '''
 
     @Unroll
-    def "should manage to parse a double array"() {
+    def "should manage to parse a triple array"() {
         expect:
-            assertThat(JsonPath.parse(json11)).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(38.995548).value()
-            assertThat(JsonPath.parse(json11)).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(-77.119759).value()
-            assertThat(JsonPath.parse(json11)).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(-76.909393).value()
-            assertThat(JsonPath.parse(json11)).array().field("place").field("bounding_box").array("coordinates").array().arrayField().contains(38.791645).value()
+            assertThat(JsonPath.parse(json11)).array().field("place").field("bounding_box").array("coordinates").array().array().arrayField().contains(38.995548).value()
+            assertThat(JsonPath.parse(json11)).array().field("place").field("bounding_box").array("coordinates").array().array().arrayField().contains(-77.119759).value()
+            assertThat(JsonPath.parse(json11)).array().field("place").field("bounding_box").array("coordinates").array().array().arrayField().contains(-76.909393).value()
+            assertThat(JsonPath.parse(json11)).array().field("place").field("bounding_box").array("coordinates").array().array().arrayField().contains(38.791645).value()
 
     }
 
