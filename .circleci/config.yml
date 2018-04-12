@@ -15,17 +15,3 @@ jobs:
       - run:
           name: "Running build"
           command: ./gradlew clean build
-      - run:
-          name: "Aggregate test results"
-          when: always
-          command: |
-            mkdir -p $CIRCLE_TEST_REPORTS/junit/
-            find . -type f -regex ".*/target/.*-reports/.*" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
-            find . -type f -regex ".*/build/.*-results/test/binary/.*" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
-            bash <(curl -s https://codecov.io/bash)
-      - store_artifacts:
-          path: /junit/
-          destination: artifacts
-      - store_test_results:
-          path: /junit/
-          destination: testartifacts
