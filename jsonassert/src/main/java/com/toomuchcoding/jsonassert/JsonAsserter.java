@@ -67,7 +67,7 @@ class JsonAsserter implements JsonVerifiable {
     public ArrayValueAssertion arrayField() {
         String peekedLast = jsonPathBuffer.peekLast();
         // Issue #9
-        if(!"[*]".equals(peekedLast) && peekedLast.endsWith("[*]")) {
+        if(!"[*]".equals(peekedLast) && peekedLast.endsWith("[*]") || jsonPath().endsWith("[*][*]")) {
             String last = jsonPathBuffer.pollLast();
             jsonPathBuffer.offer(last.replace("[*]", ""));
         }
