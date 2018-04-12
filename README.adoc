@@ -1,6 +1,7 @@
 :lib_version: 0.4.11
 
-image::https://travis-ci.org/marcingrzejszczak/jsonassert.svg?branch=master[Build Status, link=https://travis-ci.org/marcingrzejszczak/jsonassert]
+image::https://codecov.io/gh/marcingrzejszczak/jsonassert/branch/master/graph/badge.svg["codecov", link="https://codecov.io/gh/marcingrzejszczak/jsonassert"]
+image::https://circleci.com/gh/marcingrzejszczak/jsonassert.svg?style=svg["CircleCI", link="https://circleci.com/gh/marcingrzejszczak/jsonassert"]
 image::https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding.jsonassert/jsonassert/badge.svg?style=plastic[Maven Central, link="https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding.jsonassert/jsonassert"]
 image::https://badges.gitter.im/Join%20Chat.svg[Gitter, link="https://gitter.im/marcingrzejszczak/jsonassert?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"]
 
