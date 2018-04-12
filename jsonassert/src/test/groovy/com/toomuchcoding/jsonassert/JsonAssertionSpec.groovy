@@ -3,6 +3,7 @@ package com.toomuchcoding.jsonassert
 import com.jayway.jsonpath.DocumentContext
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.PathNotFoundException
+import net.minidev.json.JSONArray
 import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
@@ -35,6 +36,8 @@ class JsonAssertionSpec extends Specification {
     def 'should convert a json with a map as root to a map of path to value '() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(json1).read(expectedJsonPath, JSONArray)
         where:
             verifiable                                                                                           || expectedJsonPath
             assertThat(json1).field("some").field("nested").field("anothervalue").isEqualTo(4)                    || '''$.some.nested[?(@.anothervalue == 4)]'''
@@ -55,6 +58,8 @@ class JsonAssertionSpec extends Specification {
     def "should generate assertions for simple response body"() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(json2).read(expectedJsonPath, JSONArray)
         where:
             verifiable                                         || expectedJsonPath
             assertThat(json2).field("property1").isEqualTo("a") || '''$[?(@.property1 == 'a')]'''
@@ -71,6 +76,8 @@ class JsonAssertionSpec extends Specification {
     def "should generate assertions for null and boolean values"() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(json3).read(expectedJsonPath, JSONArray)
         where:
             verifiable                                            || expectedJsonPath
             assertThat(json3).field("property1").isEqualTo("true") || '''$[?(@.property1 == 'true')]'''
@@ -90,6 +97,8 @@ class JsonAssertionSpec extends Specification {
     def "should generate assertions for simple response body constructed from map with a list"() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(json4).read(expectedJsonPath, JSONArray)
         where:
             verifiable                                                                     || expectedJsonPath
             assertThat(toJson(json4)).field("property1").isEqualTo("a")                     || '''$[?(@.property1 == 'a')]'''
@@ -108,6 +117,8 @@ class JsonAssertionSpec extends Specification {
     def "should generate assertions for a response body containing map with integers as keys"() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(toJson(json5)).read(expectedJsonPath, JSONArray)
         where:
             verifiable                                                          || expectedJsonPath
             assertThat(toJson(json5)).field("property").field(7).isEqualTo(0.0)  || '''$.property[?(@.7 == 0.0)]'''
@@ -126,6 +137,8 @@ class JsonAssertionSpec extends Specification {
     def "should generate assertions for array in response body"() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(json6).read(expectedJsonPath, JSONArray)
         where:
             verifiable                                                    || expectedJsonPath
             assertThat(json6).array().contains("property1").isEqualTo("a") || '''$[*][?(@.property1 == 'a')]'''
@@ -143,6 +156,8 @@ class JsonAssertionSpec extends Specification {
     def "should generate assertions for array inside response body element"() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(json7).read(expectedJsonPath, JSONArray)
         where:
             verifiable                                                                   || expectedJsonPath
             assertThat(json7).array("property1").contains("property2").isEqualTo("test1") || '''$.property1[*][?(@.property2 == 'test1')]'''
@@ -157,6 +172,8 @@ class JsonAssertionSpec extends Specification {
     def "should generate assertions for nested objects in response body"() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(json8).read(expectedJsonPath, JSONArray)
         where:
             verifiable                                                            || expectedJsonPath
             assertThat(json8).field("property2").field("property3").isEqualTo("b") || '''$.property2[?(@.property3 == 'b')]'''
@@ -172,6 +189,8 @@ class JsonAssertionSpec extends Specification {
     def "should generate regex assertions for map objects in response body"() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(json9).read(expectedJsonPath, JSONArray)
         where:
             verifiable                                                      || expectedJsonPath
             assertThat(toJson(json9)).field("property2").matches("[0-9]{3}") || '''$[?(@.property2 =~ /[0-9]{3}/)]'''
@@ -186,6 +205,8 @@ class JsonAssertionSpec extends Specification {
         expect:
             def verifiable = assertThat(toJson(json)).field("property2").matches("\\d+")
             verifiable.jsonPath() == '''$[?(@.property2 =~ /\\d+/)]'''
+        and:
+            JsonPath.parse(json).read(verifiable.jsonPath(), JSONArray)
     }
 
     @Shared Map json10 =  [
@@ -199,6 +220,8 @@ class JsonAssertionSpec extends Specification {
     def "should work with more complex stuff and jsonpaths"() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(json10).read(expectedJsonPath, JSONArray)
         where:
             verifiable                                                                                     || expectedJsonPath
             assertThat(toJson(json10)).array("errors").contains("property").isEqualTo("bank_account_number") || '''$.errors[*][?(@.property == 'bank_account_number')]'''
@@ -225,12 +248,45 @@ class JsonAssertionSpec extends Specification {
     def "should manage to parse a triple array"() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(json11).read(expectedJsonPath, JSONArray)
         where:
-            verifiable                                                                                                                           || expectedJsonPath
+            verifiable                                                                                                                                                     || expectedJsonPath
             assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().array().arrayField().contains(38.995548).value()  || '''$[*].place.bounding_box.coordinates[*][*][?(@ == 38.995548)]'''
             assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().array().arrayField().contains(-77.119759).value() || '''$[*].place.bounding_box.coordinates[*][*][?(@ == -77.119759)]'''
             assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().array().arrayField().contains(-76.909393).value() || '''$[*].place.bounding_box.coordinates[*][*][?(@ == -76.909393)]'''
             assertThat(json11).array().field("place").field("bounding_box").array("coordinates").array().array().arrayField().contains(38.791645).value()  || '''$[*].place.bounding_box.coordinates[*][*][?(@ == 38.791645)]'''
+
+    }
+
+    @Shared String json12 = '''
+                            [{
+                                "place":
+                                {
+                                    "bounding_box":
+                                    {
+                                        "coordinates":
+                                            [[[
+                                                [-77.119759,38.995548],
+                                                [-76.909393,38.791645]
+                                            ]]]
+                                    }
+                                }
+                            }]
+                        '''
+
+    @Unroll
+    def "should manage to parse a quadriple array"() {
+        expect:
+            verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(json12).read(expectedJsonPath, JSONArray)
+        where:
+            verifiable                                                                                                                                                     || expectedJsonPath
+            assertThat(json12).array().field("place").field("bounding_box").array("coordinates").array().array().array().arrayField().contains(38.995548).value()  || '''$[*].place.bounding_box.coordinates[*][*][*][?(@ == 38.995548)]'''
+            assertThat(json12).array().field("place").field("bounding_box").array("coordinates").array().array().array().arrayField().contains(-77.119759).value() || '''$[*].place.bounding_box.coordinates[*][*][*][?(@ == -77.119759)]'''
+            assertThat(json12).array().field("place").field("bounding_box").array("coordinates").array().array().array().arrayField().contains(-76.909393).value() || '''$[*].place.bounding_box.coordinates[*][*][*][?(@ == -76.909393)]'''
+            assertThat(json12).array().field("place").field("bounding_box").array("coordinates").array().array().array().arrayField().contains(38.791645).value()  || '''$[*].place.bounding_box.coordinates[*][*][*][?(@ == 38.791645)]'''
 
     }
 
@@ -249,6 +305,8 @@ class JsonAssertionSpec extends Specification {
     def "should manage to parse array in array"() {
         expect:
             verifiable.jsonPath() == expectedJsonPath
+        and:
+            JsonPath.parse(jsonArrayInArray).read(expectedJsonPath, JSONArray)
         where:
             verifiable                                                                                                || expectedJsonPath
             assertThat(jsonArrayInArray).array("coordinates").array().arrayField().contains(38.995548).value()  || '''$.coordinates[*][?(@ == 38.995548)]'''
@@ -328,6 +386,8 @@ class JsonAssertionSpec extends Specification {
             String jsonPath = '''$[?(@.property1 == 'a')]'''
         expect:
             assertThat(json).matchesJsonPath(jsonPath)
+        and:
+            JsonPath.parse(json).read(jsonPath, JSONArray)
     }
 
     def "should throw exception when json path is not matched"() {
@@ -368,6 +428,8 @@ class JsonAssertionSpec extends Specification {
         expect:
         def verifiable = assertThat(toJson(json)).field("property2").matches('true|false')
         verifiable.jsonPath() == '''$[?(@.property2 =~ /true|false/)]'''
+        and:
+            JsonPath.parse(json).read(verifiable.jsonPath(), JSONArray)
     }
 
     def "should generate escaped regex assertions for numbers objects in response body"() {
@@ -378,6 +440,8 @@ class JsonAssertionSpec extends Specification {
         expect:
         def verifiable = assertThat(toJson(json)).field("property2").matches('[0-9]{2}')
         verifiable.jsonPath() == '''$[?(@.property2 =~ /[0-9]{2}/)]'''
+        and:
+            JsonPath.parse(json).read(verifiable.jsonPath(), JSONArray)
     }
 
     def "should escape regular expression properly"() {
@@ -392,6 +456,8 @@ class JsonAssertionSpec extends Specification {
         DocumentContext parsedJson = JsonPath.parse(json)
         def verifiable = assertThatJson(parsedJson).field("path").matches("^/api/[0-9]{2}\$")
         verifiable.jsonPath() == '''$[?(@.path =~ /^\\/api\\/[0-9]{2}$/)]'''
+        and:
+            JsonPath.parse(json).read(verifiable.jsonPath(), JSONArray)
     }
 
     @Issue("Accurest#193")
@@ -406,6 +472,8 @@ class JsonAssertionSpec extends Specification {
         DocumentContext parsedJson = JsonPath.parse(json)
         def verifiable = assertThatJson(parsedJson).field("text").isEqualTo("text with 'quotes' inside")
         verifiable.jsonPath() == '''$[?(@.text == 'text with \\'quotes\\' inside')]'''
+        and:
+            JsonPath.parse(json).read(verifiable.jsonPath(), JSONArray)
     }
     
     @Issue("Accurest#193")
@@ -420,6 +488,8 @@ class JsonAssertionSpec extends Specification {
             DocumentContext parsedJson = JsonPath.parse(json)
             def verifiable = assertThatJson(parsedJson).field("text").isEqualTo('''text with "quotes" inside''')
             verifiable.jsonPath() == '''$[?(@.text == 'text with "quotes" inside')]'''
+        and:
+            JsonPath.parse(json).read(verifiable.jsonPath(), JSONArray)
     }
 
     def 'should resolve the value of JSON via JSON Path'() {
@@ -487,6 +557,8 @@ class JsonAssertionSpec extends Specification {
         expect:
             def verifiable = assertThatJson(json).array("partners").array("payment_methods").arrayField().isEqualTo("BANK").value()
             verifiable.jsonPath() == '''$.partners[*].payment_methods[?(@ == 'BANK')]'''
+        and:
+            JsonPath.parse(json).read(verifiable.jsonPath(), JSONArray)
     }
 
     @Issue("#9")
@@ -496,6 +568,8 @@ class JsonAssertionSpec extends Specification {
         expect:
             def verifiable = assertThatJson(json).array("authorities").arrayField().matches("^[a-zA-Z0-9_\\- ]+\$").value()
             verifiable.jsonPath() == '''$.authorities[?(@ =~ /^[a-zA-Z0-9_\\- ]+$/)]'''
+        and:
+            JsonPath.parse(json).read(verifiable.jsonPath(), JSONArray)
     }
 
     @Issue("#10")
@@ -508,6 +582,9 @@ class JsonAssertionSpec extends Specification {
         and:
             v1.jsonPath() == '''$.some_list[?(@ == 'name1')]'''
             v2.jsonPath() == '''$.some_list[?(@ == 'name2')]'''
+        and:
+            JsonPath.parse(json).read(v1.jsonPath(), JSONArray)
+            JsonPath.parse(json).read(v2.jsonPath(), JSONArray)
     }
 
     def 'should parse an array of arrays that are root elements'() {
@@ -517,6 +594,8 @@ class JsonAssertionSpec extends Specification {
             def v1 = assertThatJson(JsonPath.parse(json)).array().arrayField().isEqualTo("Java").value()
         and:
             v1.jsonPath() == '''$[*][?(@ == 'Java')]'''
+        and:
+            JsonPath.parse(json).read(v1.jsonPath(), JSONArray)
     }
 
     @Issue('#11')
