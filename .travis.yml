@@ -1,8 +1,0 @@
-script: ./gradlew clean build
-
-jdk:
-  - oraclejdk7
-
-script:
-- ./gradlew clean build  -x :jsonassert-assertj-java8:build
-- jdk_switcher use oraclejdk8 && ./gradlew clean build
