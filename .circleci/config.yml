@@ -21,6 +21,7 @@ jobs:
           command: |
             mkdir -p $CIRCLE_TEST_REPORTS/junit/
             find . -type f -regex ".*/target/.*-reports/.*" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+            find . -type f -regex ".*/build/.*-results/.*" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
             bash <(curl -s https://codecov.io/bash)
       - store_artifacts:
           path: /junit/
