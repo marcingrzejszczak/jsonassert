@@ -825,4 +825,18 @@ class JsonAssertionSpec extends Specification {
             noExceptionThrown()
     }
 
+    @Issue('#28')
+    def 'should match {} as empty'() {
+        given:
+            String json =  '''{ "field1": {}, field2: [] }}'''
+        when:
+            assertThatJson(json).field("field1").isEmpty()
+        then:
+            noExceptionThrown()
+        when:
+            assertThatJson(json).field("field2").isEmpty()
+        then:
+            noExceptionThrown()
+    }
+
 }
