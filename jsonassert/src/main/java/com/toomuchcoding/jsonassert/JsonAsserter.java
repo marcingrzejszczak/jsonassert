@@ -197,8 +197,8 @@ class JsonAsserter implements JsonVerifiable {
             return this;
         }
         String jsonPathString = createJsonPathString();
-        JSONArray array = jsonPathToArray(jsonPathString);
-        if (!(array.size() == 0)) {
+        Object o = parsedJson.read(jsonPathString);
+        if (!isObjectEmpty(o)) {
             throw new IllegalStateException("Parsed JSON [" + parsedJson.jsonString() + "] with the JSON path [" + jsonPathString + "] is not empty!");
         }
         return this;
@@ -233,17 +233,21 @@ class JsonAsserter implements JsonVerifiable {
     private boolean containsEmptyElementsOnly(JSONArray array) {
         boolean empty = true;
         for (Object o : array) {
-            if (o instanceof Map) {
-                empty = empty && ((Map) o).isEmpty();
-            } else if (o instanceof List) {
-                empty = empty && ((List) o).isEmpty();
-            } else if (o instanceof JSONArray) {
-                empty = empty && containsEmptyElementsOnly((JSONArray) o);
-            } else if (o != null){
-                empty = false;
-            }
+            empty = empty && isObjectEmpty(o);
         }
         return empty;
+    }
+
+    private boolean isObjectEmpty(Object o) {
+        if (o instanceof Map) {
+            return ((Map) o).isEmpty();
+        } else if (o instanceof JSONArray) {
+            return containsEmptyElementsOnly((JSONArray) o);
+        } else if (o instanceof List) {
+            return ((List) o).isEmpty();
+        } else {
+            return o == null;
+        }
     }
 
     private JSONArray jsonPathToArray(String jsonPathString) {
