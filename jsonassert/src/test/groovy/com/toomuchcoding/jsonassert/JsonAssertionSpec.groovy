@@ -842,11 +842,11 @@ class JsonAssertionSpec extends Specification {
     @Issue('#31')
     def 'should work with scientific notation'() {
         given:
-        String json =  '''{ "n": 1.12E-12}'''
+            String json =  '''{ "n": 1.12E-12}'''
         when:
-        assertThatJson(json).field("n").isEqualTo(1.12E-12)
+            assertThatJson(json).field("n").isEqualTo(1.12E-12)
         then:
-        noExceptionThrown()
+            noExceptionThrown()
     }
 
 }
