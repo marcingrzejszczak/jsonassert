@@ -5,7 +5,7 @@ modifyPom {
 	project {
 		name "$project.name"
 		packaging 'jar'
-		description 'Small library for those who have a hard time understanding the complexity of JSON Path.\''
+		description 'Small library for those who have a hard time understanding the complexity of JSON Path.'
 		url 'https://github.com/marcingrzejszczak/jsonassert'
 		inceptionYear '2016'
 
