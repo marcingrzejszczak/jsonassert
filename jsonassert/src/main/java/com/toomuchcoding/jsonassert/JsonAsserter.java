@@ -148,7 +148,7 @@ class JsonAsserter implements JsonVerifiable {
     }
 
     String numberValue(Number number) {
-        return new BigDecimal(number.toString()).toString();
+        return new BigDecimal(number.toString()).toPlainString();
     }
 
     @Override
