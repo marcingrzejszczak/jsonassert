@@ -1,4 +1,4 @@
-:lib_version: 0.4.13
+:lib_version: 0.4.14
 
 image::https://codecov.io/gh/marcingrzejszczak/jsonassert/branch/master/graph/badge.svg["codecov", link="https://codecov.io/gh/marcingrzejszczak/jsonassert"]
 image::https://circleci.com/gh/marcingrzejszczak/jsonassert.svg?style=svg["CircleCI", link="https://circleci.com/gh/marcingrzejszczak/jsonassert"]
