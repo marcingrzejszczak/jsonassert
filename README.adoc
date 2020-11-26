@@ -293,6 +293,10 @@ testCompile 'com.toomuchcoding.jsonassert:jsonassert-assertj-java8:{lib_version}
 - Convert all project imports from `com.blogspot.toomuchcoding:jsonassert` to `com.toomuchcoding.jsonassert:jsonassert`
 - Convert all code imports from `com.blogspot.toomuchcoding.jsonassert` to `com.toomuchcoding.jsonassert`
 
+== From 0.1.x -> 1.0.0
+
+- The transitive dependency on `org.w2.asm:asm` was excluded in version `1.0.0`. Ensure your application supplies this library.
+
 = Contact
 
 https://gitter.im/marcingrzejszczak/jsonassert[Gitter chat]
