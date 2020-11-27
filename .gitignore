@@ -9,3 +9,8 @@ build/
 *.ipr
 *.iws
 out/
+
+.project
+bin
+.classpath
+.settings
