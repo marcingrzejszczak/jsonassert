@@ -1,4 +1,5 @@
 dependencies {
-	compile project(':jsonassert')
-	compile 'org.assertj:assertj-core:2.3.0'
+	implementation project(':jsonassert')
+	implementation "org.assertj:assertj-core:${assertj7Version}"
+	compile "com.jayway.jsonpath:json-path:${jsonPathVersion}"
 }

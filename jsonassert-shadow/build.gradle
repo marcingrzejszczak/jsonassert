@@ -1,0 +1,44 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+dependencies {
+	compile project(':jsonassert')
+}
+
+task relocateShadowJar(type: ConfigureShadowRelocation) {
+	target = tasks.shadowJar
+}
+
+shadowJar {
+	relocate "net.minidev", "shadow.net.minidev"
+	relocate "org.objectweb", "shadow.org.objectweb"
+	archiveClassifier.set('')
+}
+
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+publishing {
+	publications {
+		code(MavenPublication) {
+			from components.java
+			pom.withXml {
+				// Leaving only required deps
+				List<String> depsToLeave = ['json-path']
+				asNode().dependencies.'*'.findAll() {
+					!depsToLeave.contains(it.artifactId.text())
+				}.each() {
+					it.replaceNode { null }
+				}
+			}
+		}
+	}
+}
+
+if (!version.contains('SNAPSHOT')) {
+	apply from: "$rootDir/gradle/release.gradle"
+}
+
+tasks.build.dependsOn tasks.shadowJar
+//tasks.shadowJar.dependsOn tasks.relocateShadowJar
