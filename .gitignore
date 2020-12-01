@@ -45,3 +45,7 @@ dependency-reduced-pom.xml
 .vscode/
 .flattened-pom.xml
 .sdkmanrc
+release.properties
+pom.xml.next
+pom.xml.releaseBackup
+pom.xml.tag
