@@ -1,6 +1,6 @@
 :lib_version: 0.4.14
 
-mage::https://github.com/marcingrzejszczak/jsonassert/workflows/Build/badge.svg?style=svg["Build",link="https://github.com/marcingrzejszczak/jsonassert/actions"]
+image::https://github.com/marcingrzejszczak/jsonassert/workflows/Build/badge.svg?style=svg["Build",link="https://github.com/marcingrzejszczak/jsonassert/actions"]
 image::https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding.jsonassert/jsonassert/badge.svg?style=plastic[Maven Central, link="https://maven-badges.herokuapp.com/maven-central/com.toomuchcoding.jsonassert/jsonassert"]
 image::https://badges.gitter.im/Join%20Chat.svg[Gitter, link="https://gitter.im/marcingrzejszczak/jsonassert?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"]
 
