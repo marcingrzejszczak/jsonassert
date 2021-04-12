@@ -91,7 +91,7 @@
 		<objenesis.version>3.2</objenesis.version>
 		<logback-classic.version>1.2.3</logback-classic.version>
 
-		<gmavenplus-plugin.version>1.6.3</gmavenplus-plugin.version>
+		<gmavenplus-plugin.version>1.12.1</gmavenplus-plugin.version>
 		<maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
 		<maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
