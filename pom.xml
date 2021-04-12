@@ -85,8 +85,8 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 
 		<json-path.version>2.5.0</json-path.version>
-		<groovy.version>2.4.17</groovy.version>
-		<spock.version>1.0-groovy-2.4</spock.version>
+		<groovy.version>3.0.7</groovy.version>
+		<spock.version>2.0-M5-groovy-3.0</spock.version>
 		<cglib-nodep.version>3.1</cglib-nodep.version>
 		<objenesis.version>2.1</objenesis.version>
 		<logback-classic.version>1.1.2</logback-classic.version>
