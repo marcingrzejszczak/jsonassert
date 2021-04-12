@@ -71,14 +71,13 @@
 
 	<modules>
 		<module>jsonassert</module>
-		<module>jsonassert-assertj-java7</module>
 		<module>jsonassert-assertj-java8</module>
 		<module>jsonassert-shade</module>
 		<module>tests</module>
 	</modules>
 
 	<properties>
-		<java.version>1.7</java.version>
+		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
