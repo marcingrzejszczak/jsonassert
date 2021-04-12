@@ -18,6 +18,7 @@
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
+			<version>${json-path.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -34,27 +35,32 @@
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-all</artifactId>
+			<artifactId>groovy-json</artifactId>
+			<version>${groovy.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.spockframework</groupId>
 			<artifactId>spock-core</artifactId>
+			<version>${spock.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
+			<version>${cglib-nodep.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.objenesis</groupId>
 			<artifactId>objenesis</artifactId>
+			<version>${objenesis.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
+			<version>${logback-classic.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
