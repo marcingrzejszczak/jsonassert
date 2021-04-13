@@ -9,4 +9,4 @@ echo "Will release [${RELEASE_VERSION}] and then bump to dev version [${DEV_VERS
 git fetch --tags && \
   ./mvnw -B -Dtag=v"${RELEASE_VERSION}" release:clean release:prepare -DreleaseVersion="${RELEASE_VERSION}" -DdevelopmentVersion="${DEV_VERSION}" && \
   ./mvnw -B -Dtag=v"${RELEASE_VERSION}" -DreleaseVersion="${RELEASE_VERSION}" -DdevelopmentVersion="${DEV_VERSION}" -Dgoals=deploy release:perform -Pcentral && \
-  git push origin master --tags
+  git push origin main --tags
