@@ -849,4 +849,14 @@ class JsonAssertionSpec extends Specification {
             noExceptionThrown()
     }
 
+    @Issue('#57')
+    def 'should work with matchers'() {
+        given:
+            String json =  '''{ "value": -1}'''
+        when:
+            assertThatJson(json).field("['value']").matches("-?(\\d+)")
+        then:
+            noExceptionThrown()
+    }
+
 }
