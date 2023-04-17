@@ -21,7 +21,7 @@
 		<gson.version>2.9.0</gson.version>
 		<tapestry-json.version>5.8.1</tapestry-json.version>
 		<jettison.version>1.5.4</jettison.version>
-		<json.version>20210307</json.version>
+		<json.version>20230227</json.version>
 	</properties>
 
 	<dependencies>
