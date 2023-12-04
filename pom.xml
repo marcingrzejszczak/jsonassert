@@ -5,7 +5,7 @@
 	<groupId>com.toomuchcoding.jsonassert</groupId>
 	<artifactId>jsonassert-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.7.0</version>
+	<version>0.7.1-SNAPSHOT</version>
 
 	<name>Json Assert Parent</name>
 	<description>Json Assert Parent</description>
@@ -42,7 +42,7 @@
 		<developerConnection>
 			scm:git:ssh://git@github.com/marcingrzejszczak/jsonassert.git
 		</developerConnection>
-		<tag>v0.7.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<developers>
 		<developer>
