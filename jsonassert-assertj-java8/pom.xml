@@ -20,6 +20,18 @@
 			<artifactId>json-path</artifactId>
 			<version>${json-path.version}</version>
 			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j-api.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.toomuchcoding.jsonassert</groupId>
