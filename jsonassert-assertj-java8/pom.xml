@@ -12,7 +12,7 @@
 	</parent>
 
 	<properties>
-		<assertj.version>3.25.2</assertj.version>
+		<assertj.version>3.25.3</assertj.version>
 	</properties>
 	<dependencies>
 		<dependency>
