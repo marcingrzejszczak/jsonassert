@@ -12,7 +12,7 @@
 	</parent>
 
 	<properties>
-		<maven-shade-plugin.version>3.5.1</maven-shade-plugin.version>
+		<maven-shade-plugin.version>3.5.2</maven-shade-plugin.version>
 		<maven-dependency-plugin.version>3.6.1</maven-dependency-plugin.version>
 		<build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
 
