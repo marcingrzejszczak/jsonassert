@@ -89,7 +89,7 @@
 		<cglib-nodep.version>3.3.0</cglib-nodep.version>
 		<objenesis.version>3.3</objenesis.version>
 		<logback-classic.version>1.4.14</logback-classic.version>
-		<json-smart.version>2.5.0</json-smart.version>
+		<json-smart.version>2.5.1</json-smart.version>
 		<slf4j-api.version>1.7.36</slf4j-api.version>
 
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
