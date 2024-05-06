@@ -19,7 +19,7 @@
 		<!-- Aligned with jayway library -->
 		<jackson-databind.version>2.16.1</jackson-databind.version>
 		<gson.version>2.10.1</gson.version>
-		<tapestry-json.version>5.8.4</tapestry-json.version>
+		<tapestry-json.version>5.8.6</tapestry-json.version>
 		<jettison.version>1.5.4</jettison.version>
 		<json.version>20231013</json.version>
 	</properties>
