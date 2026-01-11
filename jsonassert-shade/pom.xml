@@ -12,9 +12,9 @@
 	</parent>
 
 	<properties>
-		<maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
-		<maven-dependency-plugin.version>3.8.0</maven-dependency-plugin.version>
+		<maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
 		<build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+		<maven-antrun-plugin.version>3.2.0</maven-antrun-plugin.version>
 
 		<!-- Aligned with jayway library -->
 		<jackson-databind.version>2.17.2</jackson-databind.version>
@@ -85,6 +85,8 @@
 							<shadedArtifactAttached>false</shadedArtifactAttached>
 							<createSourcesJar>true</createSourcesJar>
 							<shadeSourcesContent>true</shadeSourcesContent>
+							<reproducibleBuild>true</reproducibleBuild>
+							<outputTimestamp>1704067200</outputTimestamp>
 							<keepDependenciesWithProvidedScope>false
 							</keepDependenciesWithProvidedScope>
 							<relocations>
@@ -118,30 +120,26 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>${maven-dependency-plugin.version}</version>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>${maven-antrun-plugin.version}</version>
 				<executions>
 					<execution>
-						<id>unpack-dependencies</id>
+						<id>unpack-sources</id>
 						<phase>package</phase>
 						<goals>
-							<goal>unpack</goal>
+							<goal>run</goal>
 						</goals>
 						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>${project.artifactId}</artifactId>
-									<version>${project.version}</version>
-									<classifier>sources</classifier>
-									<type>jar</type>
-									<overWrite>false</overWrite>
-									<outputDirectory>${project.build.directory}/sources
-									</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-							<includes>**/shaded/**/*.*,**/toomuchcoding/**/*.*
-							</includes>
+							<target>
+								<unzip src="${project.build.directory}/${project.artifactId}-${project.version}-sources.jar"
+									   dest="${project.build.directory}/sources"
+									   overwrite="false">
+									<patternset>
+										<include name="**/shaded/**/*.*"/>
+										<include name="**/toomuchcoding/**/*.*"/>
+									</patternset>
+								</unzip>
+							</target>
 						</configuration>
 					</execution>
 				</executions>
